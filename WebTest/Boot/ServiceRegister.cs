@@ -4,8 +4,6 @@ using WebTest.Domains.Time;
 using WebTest.Exeptions;
 using AspProblemDetailsFactory = Microsoft.AspNetCore.Mvc.Infrastructure.ProblemDetailsFactory;
 using ProblemDetailsFactory = WebTest.Exeptions.ProblemDetailsFactory;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication;
 using WebTest.Security.Authentication.Token;
 
 namespace WebTest.Boot
