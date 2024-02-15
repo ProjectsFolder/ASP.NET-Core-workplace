@@ -1,4 +1,4 @@
-﻿namespace WebTest.Services.Interfaces
+﻿namespace WebTest.Domains.Time.Interfaces
 {
     public interface ITimeService
     {

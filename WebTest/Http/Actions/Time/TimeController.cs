@@ -1,17 +1,17 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using WebTest.Domains.Time;
+using WebTest.Domains.Time.Handlers;
+using WebTest.Dto.Time.Request;
 using WebTest.Exeptions.Concrete;
-using WebTest.Http.Actions.Time.Request;
 using WebTest.Security.Authentication.Token;
 
 namespace WebTest.Http.Actions.Time
 {
-    public class TimeController : BaseAction
+    public class TimeController : AppController
     {
         [HttpGet]
         [Authorize(AuthenticationSchemes = TokenAuthDefaults.SchemaName)]
-        public IActionResult GetTime([FromBody] TimeRequest request, GetTimeHandler handler)
+        public IActionResult GetTime([FromBody] TimeDto request, GetTime handler)
         {
             return Success(handler, request);
         }

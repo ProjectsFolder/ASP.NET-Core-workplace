@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
-using WebTest.Boot;
+using WebTest.Boot.Register;
 
 [assembly: ApiController]
 var builder = WebApplication.CreateBuilder(args);
-builder.RegisterAppServices();
+builder.AddAppServices();
+builder.AddTimeServices();
+builder.AddUserServices();
 var app = builder.Build();
 
 app.UseRouting();

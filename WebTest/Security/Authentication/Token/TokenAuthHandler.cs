@@ -6,7 +6,7 @@ using System.Text.Encodings.Web;
 
 namespace WebTest.Security.Authentication.Token
 {
-    public class TokenAuthHandler(IOptionsMonitor<TokenAuthOptions> options, ILoggerFactory logger, UrlEncoder encoder, IConfiguration config)
+    public class TokenAuthHandler(IOptionsMonitor<TokenAuthOptions> options, ILoggerFactory logger, UrlEncoder encoder)
         : AuthenticationHandler<TokenAuthOptions>(options, logger, encoder)
     {
         protected override Task<AuthenticateResult> HandleAuthenticateAsync()

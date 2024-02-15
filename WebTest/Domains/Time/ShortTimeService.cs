@@ -1,6 +1,6 @@
-﻿using WebTest.Services.Interfaces;
+﻿using WebTest.Domains.Time.Interfaces;
 
-namespace WebTest.Services
+namespace WebTest.Domains.Time
 {
     public class ShortTimeService : ITimeService
     {

@@ -5,7 +5,7 @@ using WebTest.Http.Responses;
 namespace WebTest.Http.Actions
 {
     [Route("api/[controller]")]
-    public class BaseAction : ControllerBase
+    public class AppController : ControllerBase
     {
         protected IActionResult Success<Request, Response>(IHandler<Request, Response> handler, Request? request = null)
             where Request : class

@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WebTest.Http.Actions.Time.Request
+namespace WebTest.Dto.Time.Request
 {
-    public class TimeRequest(string? title, string? version)
+    public class TimeDto(string? title, string? version)
     {
         [Required]
         public string? Title { get; set; } = title;
