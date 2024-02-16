@@ -83,8 +83,8 @@ namespace WebTest.Boot.Register
             var dependencyTypes = assembly.GetTypes()
                 .Where(type => type.GetCustomAttributes()
                     .Select(e => e.GetType())
-                    .Contains(typeof(Dependency)
-                ))
+                    .Contains(typeof(Dependency))
+                )
                 .ToList();
             foreach (var dependencyType in dependencyTypes)
             {
