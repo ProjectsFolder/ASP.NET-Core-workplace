@@ -6,7 +6,10 @@ namespace WebTest.Boot.Register
     {
         public static void AddUserServices(this WebApplicationBuilder builder)
         {
-            builder.Services.AddTransient<GetList>();
+            builder.Services.AddTransient<ListUsers>();
+            builder.Services.AddTransient<CreateUser>();
+            builder.Services.AddTransient<UpdateUser>();
+            builder.Services.AddTransient<DeleteUser>();
         }
     }
 }

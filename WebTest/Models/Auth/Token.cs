@@ -2,10 +2,8 @@
 
 namespace WebTest.Models.Auth
 {
-    public class Token : IModel
+    public class Token : BaseModel
     {
-        public int? Id { get; set; }
-
         [Column("token")]
         public string Value { get; set; } = string.Empty;
 
@@ -18,9 +16,9 @@ namespace WebTest.Models.Auth
         [ForeignKey("UserId")]
         public User.User User { get; set; } = null!;
 
-        public string? GetId()
+        public string GetId()
         {
-            return Id?.ToString();
+            return Id.ToString();
         }
     }
 }

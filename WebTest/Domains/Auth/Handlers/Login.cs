@@ -35,13 +35,12 @@ namespace WebTest.Domains.Auth.Handlers
                 throw new ApiException("Incorrect password", 403);
             }
 
-            var userId = user.Id ?? 0;
-            tokenRepository.DeleteAllByUser(userId);
+            tokenRepository.DeleteAllByUser(user.Id);
 
             var token = new Token()
             {
                 CreatedAt = DateTime.UtcNow,
-                UserId = userId,
+                UserId = user.Id,
                 Value = StringUtils.GetGuid()
             };
 

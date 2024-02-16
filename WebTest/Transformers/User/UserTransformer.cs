@@ -3,13 +3,14 @@ using WebTest.Dto.User.Response;
 
 namespace WebTest.Transformers.User
 {
-    public class UserTransformer(ITimeService timeService) : ITransformer<Models.User.User, UserTimeDto>
+    public class UserTransformer(ITimeService timeService) : ITransformer<Models.User.User, UserDto>
     {
-        public UserTimeDto Transform(Models.User.User from)
+        public UserDto Transform(Models.User.User from)
         {
-            return new UserTimeDto()
+            return new UserDto()
             {
-                UserName = from.Login,
+                Id = from.Id,
+                Login = from.Login,
                 Time = timeService.GetTime()
             };
         }

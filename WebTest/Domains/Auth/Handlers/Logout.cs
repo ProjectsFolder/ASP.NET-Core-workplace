@@ -16,7 +16,7 @@ namespace WebTest.Domains.Auth.Handlers
                 return null;
             }
 
-            tokenRepository.DeleteAllByUser(user.Id ?? 0);
+            tokenRepository.DeleteAllByUser(user.Id);
 
             return null;
         }

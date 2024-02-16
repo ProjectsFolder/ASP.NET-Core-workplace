@@ -1,16 +1,14 @@
 ﻿namespace WebTest.Models.User
 {
-    public class User : IModel
+    public class User : BaseModel
     {
-        public int? Id { get; set; }
-
         public string Login { get; set; } = string.Empty;
 
         public string Password { get; set; } = string.Empty;
 
-        public string? GetId()
+        public string GetId()
         {
-            return Id?.ToString();
+            return Id.ToString();
         }
     }
 }

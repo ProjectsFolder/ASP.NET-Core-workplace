@@ -17,12 +17,11 @@ namespace WebTest.Services
         }
 
         public void InsertOrUpdate<T>(T model)
-            where T : class, IModel
+            where T : BaseModel
         {
             var set = Set<T>();
 
-            var id = model.GetId();
-            if (id != null && set.Any(e => e.GetId() == id))
+            if (model.Id > 0 && set.Any(e => e.Id == model.Id))
             {
                 set.Attach(model);
                 Entry(model).State = EntityState.Modified;

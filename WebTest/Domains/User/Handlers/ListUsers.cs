@@ -4,14 +4,14 @@ using WebTest.Transformers.User;
 
 namespace WebTest.Domains.User.Handlers
 {
-    public class GetList(
+    public class ListUsers(
         UserRepository userRepository,
         UserTransformer transformer
-        ) : IHandler<object, IEnumerable<UserTimeDto>>
+        ) : IHandler<object, IEnumerable<UserDto>>
     {
-        public IEnumerable<UserTimeDto>? Handle(object? dto)
+        public IEnumerable<UserDto>? Handle(object? dto)
         {
-            List<UserTimeDto> response = [];
+            List<UserDto> response = [];
             var users = userRepository.GetUsers();
             foreach (var user in users)
             {
