@@ -46,7 +46,7 @@ namespace WebTest.Domains.Auth.Handlers
                 Value = StringUtils.GetGuid()
             };
 
-            tokenRepository.InsertOrUpdate(token);
+            tokenRepository.Save(token);
 
             return new TokenDto() { Token = token.Value };
         }

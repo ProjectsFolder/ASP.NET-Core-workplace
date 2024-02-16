@@ -8,7 +8,5 @@ namespace WebTest.Domains.User.Repositories
         public IEnumerable<UserModel> GetUsers() => context.Users;
 
         public UserModel? GetUser(int id) => context.Users.FirstOrDefault(u => u.Id == id);
-
-        public void Save(UserModel user) => context.InsertOrUpdate(user);
     }
 }
