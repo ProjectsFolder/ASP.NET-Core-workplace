@@ -1,4 +1,5 @@
-﻿using WebTest.Domains.Auth.Repositories;
+﻿using WebTest.Attributes;
+using WebTest.Domains.Auth.Repositories;
 using WebTest.Dto.Auth.Request;
 using WebTest.Dto.Auth.Response;
 using WebTest.Exeptions.Concrete;
@@ -8,6 +9,7 @@ using WebTest.Utils;
 
 namespace WebTest.Domains.Auth.Handlers
 {
+    [Dependency]
     public class Login(
         DataContext context,
         TokenRepository tokenRepository,

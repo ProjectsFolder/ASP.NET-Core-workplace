@@ -1,4 +1,5 @@
-﻿using WebTest.Domains.User.Repositories;
+﻿using WebTest.Attributes;
+using WebTest.Domains.User.Repositories;
 using WebTest.Dto.User.Request;
 using WebTest.Dto.User.Response;
 using WebTest.Exeptions.Concrete;
@@ -6,6 +7,7 @@ using WebTest.Transformers.User;
 
 namespace WebTest.Domains.User.Handlers
 {
+    [Dependency]
     public class UpdateUser(
         UserRepository userRepository,
         UserTransformer transformer

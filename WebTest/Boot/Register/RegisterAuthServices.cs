@@ -6,8 +6,6 @@ namespace WebTest.Boot.Register
     {
         public static void AddAuthServices(this WebApplicationBuilder builder)
         {
-            builder.Services.AddTransient<Login>();
-            builder.Services.AddTransient<Logout>();
         }
     }
 }

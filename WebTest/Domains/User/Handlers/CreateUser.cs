@@ -1,10 +1,12 @@
-﻿using WebTest.Domains.User.Repositories;
+﻿using WebTest.Attributes;
+using WebTest.Domains.User.Repositories;
 using WebTest.Dto.User.Request;
 using WebTest.Dto.User.Response;
 using WebTest.Transformers.User;
 
 namespace WebTest.Domains.User.Handlers
 {
+    [Dependency]
     public class CreateUser(
         UserRepository userRepository,
         UserTransformer transformer

@@ -1,8 +1,10 @@
-﻿using WebTest.Domains.Auth.Repositories;
+﻿using WebTest.Attributes;
+using WebTest.Domains.Auth.Repositories;
 using WebTest.Services;
 
 namespace WebTest.Domains.Auth.Handlers
 {
+    [Dependency]
     public class Logout(
         AuthService authService,
         TokenRepository tokenRepository

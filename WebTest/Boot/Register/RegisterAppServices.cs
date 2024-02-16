@@ -8,6 +8,8 @@ using WebTest.Transformers;
 using WebTest.Security.Authentication.UserToken;
 using WebTest.Security.Authentication.ApiToken;
 using System.Security.Claims;
+using Microsoft.Extensions.DependencyInjection;
+using WebTest.Attributes;
 
 namespace WebTest.Boot.Register
 {
@@ -66,16 +68,27 @@ namespace WebTest.Boot.Register
                 });
             }
 
-            var tramsformerTypes = assembly.GetTypes()
+            var transformerTypes = assembly.GetTypes()
                 .Where(type => type.GetInterfaces()
                     .Where(e => e.IsGenericType)
                     .Select(e => e.GetGenericTypeDefinition())
                     .Contains(typeof(ITransformer<,>))
                 )
                 .ToList();
-            foreach (var tramsformerType in tramsformerTypes)
+            foreach (var transformerType in transformerTypes)
             {
-                builder.Services.AddScoped(tramsformerType);
+                builder.Services.AddScoped(transformerType);
+            }
+
+            var dependencyTypes = assembly.GetTypes()
+                .Where(type => type.GetCustomAttributes()
+                    .Select(e => e.GetType())
+                    .Contains(typeof(Dependency)
+                ))
+                .ToList();
+            foreach (var dependencyType in dependencyTypes)
+            {
+                builder.Services.AddScoped(dependencyType);
             }
         }
     }
