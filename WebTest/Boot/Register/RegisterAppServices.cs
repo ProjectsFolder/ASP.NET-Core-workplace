@@ -7,8 +7,6 @@ using System.Reflection;
 using WebTest.Transformers;
 using WebTest.Security.Authentication.UserToken;
 using WebTest.Security.Authentication.ApiToken;
-using System.Security.Claims;
-using Microsoft.Extensions.DependencyInjection;
 using WebTest.Attributes;
 
 namespace WebTest.Boot.Register
@@ -25,7 +23,6 @@ namespace WebTest.Boot.Register
                 var service = services.GetService<IHttpContextAccessor>()?.HttpContext?.User;
                 return service ?? throw new Exception("Service not found");
             });
-            builder.Services.AddTransient<AuthService>();
 
             builder.Services.AddControllers();
 

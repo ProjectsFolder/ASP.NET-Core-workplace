@@ -1,8 +1,10 @@
-﻿using System.Security.Claims;
+﻿using WebTest.Attributes;
+using System.Security.Claims;
 using WebTest.Models.User;
 
 namespace WebTest.Services
 {
+    [Dependency]
     public class AuthService(
         ClaimsPrincipal claims,
         DataContext dataContext)
