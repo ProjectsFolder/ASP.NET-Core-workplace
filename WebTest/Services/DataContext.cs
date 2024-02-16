@@ -1,14 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Xml;
 using WebTest.Models;
+using WebTest.Models.Auth;
+using WebTest.Models.User;
 
 namespace WebTest.Services
 {
     public class DataContext : DbContext
     {
         public DbSet<User> Users { get; set; } = null!;
+
+        public DbSet<Token> Tokens { get; set; } = null!;
 
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
@@ -21,7 +22,7 @@ namespace WebTest.Services
             var set = Set<T>();
 
             var id = model.GetId();
-            if (set.Any(e => e.GetId() == id))
+            if (id != null && set.Any(e => e.GetId() == id))
             {
                 set.Attach(model);
                 Entry(model).State = EntityState.Modified;
@@ -32,6 +33,16 @@ namespace WebTest.Services
             }
 
             SaveChanges();
+        }
+
+        public T Transaction<T>(Func<T> func)
+        {
+            using var transaction = Database.BeginTransaction();
+            var result = func();
+            SaveChanges();
+            transaction.Commit();
+
+            return result;
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using WebTest.Domains.User.Repositories;
-using WebTest.Domains.User.Handlers;
+﻿using WebTest.Domains.User.Handlers;
 
 namespace WebTest.Boot.Register
 {

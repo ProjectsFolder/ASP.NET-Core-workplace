@@ -1,11 +1,13 @@
 ﻿using WebTest.Exeptions;
 using AspProblemDetailsFactory = Microsoft.AspNetCore.Mvc.Infrastructure.ProblemDetailsFactory;
 using ProblemDetailsFactory = WebTest.Exeptions.ProblemDetailsFactory;
-using WebTest.Security.Authentication.Token;
 using Microsoft.EntityFrameworkCore;
 using WebTest.Services;
 using System.Reflection;
 using WebTest.Transformers;
+using WebTest.Security.Authentication.UserToken;
+using WebTest.Security.Authentication.ApiToken;
+using System.Security.Claims;
 
 namespace WebTest.Boot.Register
 {
@@ -15,17 +17,27 @@ namespace WebTest.Boot.Register
         {
             var config = builder.Configuration;
 
+            builder.Services.AddHttpContextAccessor();
             builder.Services.AddTransient<AspProblemDetailsFactory, ProblemDetailsFactory>();
+            builder.Services.AddTransient(services => {
+                var service = services.GetService<IHttpContextAccessor>()?.HttpContext?.User;
+                return service ?? throw new Exception("Service not found");
+            });
+            builder.Services.AddTransient<AuthService>();
 
             builder.Services.AddControllers();
 
             builder.Services.AddExceptionHandler<ExceptionHandler>();
             builder.Services.AddProblemDetails();
 
-            builder.Services.AddAuthentication().AddScheme<TokenAuthOptions, TokenAuthHandler>(TokenAuthDefaults.SchemaName, options =>
+            builder.Services.AddAuthentication().AddScheme<ApiTokenOptions, ApiTokenHandler>(ApiTokenDefaults.SchemaName, options =>
             {
                 options.HeaderName = config.GetValue<string>("ApiTokenHeaderName") ?? "Authorization";
                 options.Token = config.GetValue<string>("ApiToken");
+            });
+            builder.Services.AddAuthentication().AddScheme<UserTokenOptions, UserTokenHandler>(UserTokenDefaults.SchemaName, options =>
+            {
+                options.HeaderName = config.GetValue<string>("UserTokenHeaderName") ?? "Authorization";
             });
 
             builder.Services.AddDbContext<DataContext>(options => options.UseSqlite(config.GetConnectionString("WebApiDatabase")), ServiceLifetime.Scoped);
@@ -33,7 +45,6 @@ namespace WebTest.Boot.Register
             var assembly = Assembly.GetExecutingAssembly();
             var repositoryTypes = assembly.GetTypes()
                 .Where(type => type.BaseType == typeof(BaseRepository))
-                .DistinctBy(e => e.GetType().Name)
                 .ToList();
             foreach (var repositoryType in repositoryTypes)
             {
@@ -61,7 +72,6 @@ namespace WebTest.Boot.Register
                     .Select(e => e.GetGenericTypeDefinition())
                     .Contains(typeof(ITransformer<,>))
                 )
-                .DistinctBy(e => e.GetType().Name)
                 .ToList();
             foreach (var tramsformerType in tramsformerTypes)
             {

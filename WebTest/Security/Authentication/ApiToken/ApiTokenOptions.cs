@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 
-namespace WebTest.Security.Authentication.Token
+namespace WebTest.Security.Authentication.ApiToken
 {
-    public class TokenAuthOptions : AuthenticationSchemeOptions
+    public class ApiTokenOptions : AuthenticationSchemeOptions
     {
         public string HeaderName { get; set; } = "Authorization";
 

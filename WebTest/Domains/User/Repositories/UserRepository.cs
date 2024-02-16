@@ -1,5 +1,5 @@
 ﻿using WebTest.Services;
-using UserModel = WebTest.Models.User;
+using UserModel = WebTest.Models.User.User;
 
 namespace WebTest.Domains.User.Repositories
 {

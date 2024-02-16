@@ -14,13 +14,14 @@ namespace WebTest.Migrations
                 name: "users",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false).Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(nullable: false),
-                    Password = table.Column<string>(nullable: false),
+                    id = table.Column<int>(nullable: false).Annotation("Sqlite:Autoincrement", true),
+                    name = table.Column<string>(nullable: false),
+                    password = table.Column<string>(nullable: false),
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_users", x => x.Id);
+                    table.PrimaryKey("pk_users", x => x.id);
+                    table.UniqueConstraint("uk_users_login", x => x.name);
                 });
 
             migrationBuilder.Sql("INSERT INTO users (id, name, password) VALUES (1, \"Alex\", \"abC\"), (2, \"Bob\", \"bcd\"), (3, \"Sam\", \"CDE\")");

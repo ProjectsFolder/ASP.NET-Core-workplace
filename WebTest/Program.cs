@@ -6,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AddAppServices();
 builder.AddTimeServices();
 builder.AddUserServices();
+builder.AddAuthServices();
 var app = builder.Build();
 
 app.UseRouting();
