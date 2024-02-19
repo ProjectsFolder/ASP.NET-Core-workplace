@@ -8,6 +8,9 @@ using WebTest.Transformers;
 using WebTest.Security.Authentication.UserToken;
 using WebTest.Security.Authentication.ApiToken;
 using WebTest.Attributes;
+using WebTest.Jobs;
+using NCrontab;
+using WebTest.Services.Jobs;
 
 namespace WebTest.Boot.Register
 {
@@ -87,6 +90,17 @@ namespace WebTest.Boot.Register
             {
                 builder.Services.AddScoped(dependencyType);
             }
+        }
+
+        public static void AddCronJob<T>(this WebApplicationBuilder builder, string cronExpression)
+            where T : class, ICronJob
+        {
+            var cron = CrontabSchedule.TryParse(cronExpression)
+                       ?? throw new ArgumentException("Invalid cron expression", nameof(cronExpression));
+
+            builder.Services.AddHostedService<CronScheduler>();
+            builder.Services.AddSingleton<T>();
+            builder.Services.AddSingleton(new CronRegistryEntry(typeof(T), cron));
         }
     }
 }

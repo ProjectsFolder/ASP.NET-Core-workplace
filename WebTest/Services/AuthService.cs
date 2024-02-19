@@ -5,7 +5,7 @@ using WebTest.Models.User;
 namespace WebTest.Services
 {
     [Service]
-    public class AuthService(
+    public sealed class AuthService(
         ClaimsPrincipal claims,
         DataContext dataContext)
     {

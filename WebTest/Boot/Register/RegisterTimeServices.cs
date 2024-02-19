@@ -7,7 +7,7 @@ namespace WebTest.Boot.Register
     {
         public static void AddTimeServices(this WebApplicationBuilder builder)
         {
-            builder.Services.AddTransient<ITimeService, ShortTimeService>();
+            builder.Services.AddTransient<ITimeService, TimeService>();
         }
     }
 }

@@ -5,7 +5,7 @@ using WebTest.Models.User;
 
 namespace WebTest.Services
 {
-    public class DataContext : DbContext
+    public sealed class DataContext : DbContext
     {
         public DbSet<User> Users { get; set; } = null!;
 

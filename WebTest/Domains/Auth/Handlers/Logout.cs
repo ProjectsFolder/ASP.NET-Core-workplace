@@ -13,12 +13,10 @@ namespace WebTest.Domains.Auth.Handlers
         public object? Handle(object? dto)
         {
             var user = authService.GetCurrentUser();
-            if (user == null)
+            if (user != null)
             {
-                return null;
+                tokenRepository.DeleteAllByUser(user.Id);
             }
-
-            tokenRepository.DeleteAllByUser(user.Id);
 
             return null;
         }
