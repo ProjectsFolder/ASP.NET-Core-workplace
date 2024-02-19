@@ -4,7 +4,7 @@ using WebTest.Services;
 
 namespace WebTest.Domains.Auth.Handlers
 {
-    [Dependency]
+    [Service]
     public class Logout(
         AuthService authService,
         TokenRepository tokenRepository

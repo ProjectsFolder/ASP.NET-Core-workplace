@@ -5,7 +5,7 @@ using WebTest.Transformers.User;
 
 namespace WebTest.Domains.User.Handlers
 {
-    [Dependency]
+    [Service]
     public class ListUsers(
         UserRepository userRepository,
         UserTransformer transformer

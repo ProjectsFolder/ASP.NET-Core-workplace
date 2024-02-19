@@ -4,7 +4,7 @@ using WebTest.Models.User;
 
 namespace WebTest.Services
 {
-    [Dependency]
+    [Service]
     public class AuthService(
         ClaimsPrincipal claims,
         DataContext dataContext)
@@ -19,5 +19,9 @@ namespace WebTest.Services
 
             return dataContext.Users.FirstOrDefault(u => string.Equals(u.Login.ToLower(), login.ToLower()));
         }
+
+        public static string HashPassword(string password) => BCrypt.Net.BCrypt.HashPassword(password);
+
+        public static bool CheckPassword(User user, string password) => BCrypt.Net.BCrypt.Verify(password, user.Password);
     }
 }

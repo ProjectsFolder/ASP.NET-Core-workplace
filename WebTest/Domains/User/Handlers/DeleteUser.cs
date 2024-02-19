@@ -5,7 +5,7 @@ using WebTest.Exeptions.Concrete;
 
 namespace WebTest.Domains.User.Handlers
 {
-    [Dependency]
+    [Service]
     public class DeleteUser(
         UserRepository userRepository
         ) : IHandler<DeleteDto, object>

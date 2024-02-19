@@ -2,11 +2,13 @@
 using WebTest.Domains.User.Repositories;
 using WebTest.Dto.User.Request;
 using WebTest.Dto.User.Response;
+using WebTest.Services;
 using WebTest.Transformers.User;
+using WebTest.Utils;
 
 namespace WebTest.Domains.User.Handlers
 {
-    [Dependency]
+    [Service]
     public class CreateUser(
         UserRepository userRepository,
         UserTransformer transformer
@@ -22,7 +24,7 @@ namespace WebTest.Domains.User.Handlers
             var user = new Models.User.User()
             {
                 Login = dto.Login,
-                Password = dto.Password,
+                Password = AuthService.HashPassword(dto.Password),
             };
 
             userRepository.Save(user);

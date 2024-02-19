@@ -9,7 +9,7 @@ using WebTest.Utils;
 
 namespace WebTest.Domains.Auth.Handlers
 {
-    [Dependency]
+    [Service]
     public class Login(
         DataContext context,
         TokenRepository tokenRepository,
@@ -32,7 +32,7 @@ namespace WebTest.Domains.Auth.Handlers
         private TokenDto? Process(AuthDto dto)
         {
             var user = userRepository.GetUserByLogin(dto.Login) ?? throw new ApiException("User not found", 404);
-            if (user.Password != dto.Password)
+            if (!AuthService.CheckPassword(user, dto.Password))
             {
                 throw new ApiException("Incorrect password", 403);
             }
@@ -43,7 +43,7 @@ namespace WebTest.Domains.Auth.Handlers
             {
                 CreatedAt = DateTime.UtcNow,
                 UserId = user.Id,
-                Value = StringUtils.GetGuid()
+                Value = StringUtils.RandomString(64)
             };
 
             tokenRepository.Save(token);

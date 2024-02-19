@@ -18,6 +18,7 @@ namespace WebTest.Security.Authentication.UserToken
                 return Task.FromResult(AuthenticateResult.Fail($"Missing header: {Options.HeaderName}"));
             }
 
+            token = token.ToString()[7..];
             var userToken = dataContext.Tokens.Include(t => t.User).FirstOrDefault(t => t.Value == token.ToString());
             if (userToken == null)
             {
