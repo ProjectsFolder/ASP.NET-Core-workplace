@@ -1,6 +1,4 @@
-﻿using WebTest.Domains.User.Handlers;
-
-namespace WebTest.Boot.Register
+﻿namespace WebTest.Boot.Register
 {
     public static class RegisterUserServices
     {

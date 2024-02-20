@@ -1,7 +1,7 @@
 ﻿using WebTest.Services;
-using UserModel = WebTest.Models.User.User;
+using UserModel = WebTest.Models.OrgStructure.User;
 
-namespace WebTest.Domains.User.Repositories
+namespace WebTest.Domains.OrgStructure.Repositories
 {
     public class UserRepository : BaseRepository
     {

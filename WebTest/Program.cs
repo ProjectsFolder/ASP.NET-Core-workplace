@@ -19,3 +19,5 @@ app.UseAuthorization();
 app.MapGet("/", () => "App started!");
 
 app.Run();
+
+public partial class Program { }

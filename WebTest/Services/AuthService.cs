@@ -1,13 +1,12 @@
 ﻿using WebTest.Attributes;
 using System.Security.Claims;
-using WebTest.Models.User;
+using Microsoft.AspNetCore.Identity;
+using WebTest.Models.OrgStructure;
 
 namespace WebTest.Services
 {
     [Service]
-    public sealed class AuthService(
-        ClaimsPrincipal claims,
-        DataContext dataContext)
+    public sealed class AuthService(ClaimsPrincipal claims, DataContext dataContext)
     {
         public User? GetCurrentUser()
         {
@@ -20,8 +19,19 @@ namespace WebTest.Services
             return dataContext.Users.FirstOrDefault(u => string.Equals(u.Login.ToLower(), login.ToLower()));
         }
 
-        public static string HashPassword(string password) => BCrypt.Net.BCrypt.HashPassword(password);
+        public static string HashPassword(User user, string password)
+        {
+            var passwordHasher = new PasswordHasher<User>();
 
-        public static bool CheckPassword(User user, string password) => BCrypt.Net.BCrypt.Verify(password, user.Password);
+            return passwordHasher.HashPassword(user, password);
+        }
+
+        public static bool CheckPassword(User user, string password)
+        {
+            var passwordHasher = new PasswordHasher<User>();
+            var result = passwordHasher.VerifyHashedPassword(user, user.Password, password);
+
+            return result == PasswordVerificationResult.Success;
+        }
     }
 }

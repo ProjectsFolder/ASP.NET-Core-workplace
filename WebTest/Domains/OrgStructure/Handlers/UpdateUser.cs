@@ -1,13 +1,12 @@
 ﻿using WebTest.Attributes;
-using WebTest.Domains.User.Repositories;
+using WebTest.Domains.OrgStructure.Repositories;
 using WebTest.Dto.User.Request;
 using WebTest.Dto.User.Response;
 using WebTest.Exeptions.Concrete;
 using WebTest.Services;
 using WebTest.Transformers.User;
-using WebTest.Utils;
 
-namespace WebTest.Domains.User.Handlers
+namespace WebTest.Domains.OrgStructure.Handlers
 {
     [Service]
     public class UpdateUser(
@@ -24,7 +23,7 @@ namespace WebTest.Domains.User.Handlers
 
             var user = userRepository.GetUser(dto.Id) ?? throw new ApiException("User not found", 404);
             user.Login = dto.Login;
-            user.Password = AuthService.HashPassword(dto.Password);
+            user.Password = AuthService.HashPassword(user, dto.Password);
             userRepository.Save(user);
 
             return transformer.Transform(user);

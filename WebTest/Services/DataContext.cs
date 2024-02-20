@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WebTest.Models;
 using WebTest.Models.Auth;
-using WebTest.Models.User;
+using WebTest.Models.OrgStructure;
 
 namespace WebTest.Services
 {
@@ -42,6 +42,14 @@ namespace WebTest.Services
             transaction.Commit();
 
             return result;
+        }
+
+        public void Transaction(Action action)
+        {
+            using var transaction = Database.BeginTransaction();
+            action();
+            SaveChanges();
+            transaction.Commit();
         }
     }
 }

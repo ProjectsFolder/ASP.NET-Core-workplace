@@ -3,9 +3,9 @@ using WebTest.Dto.User.Response;
 
 namespace WebTest.Transformers.User
 {
-    public class UserTransformer(ITimeService timeService) : ITransformer<Models.User.User, UserDto>
+    public class UserTransformer(ITimeService timeService) : ITransformer<Models.OrgStructure.User, UserDto>
     {
-        public UserDto Transform(Models.User.User from)
+        public UserDto Transform(Models.OrgStructure.User from)
         {
             return new UserDto()
             {

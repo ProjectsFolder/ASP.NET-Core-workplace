@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using WebTest.Domains.User.Handlers;
+using WebTest.Domains.OrgStructure.Handlers;
 using WebTest.Dto.User.Request;
 using WebTest.Security.Authentication.UserToken;
 

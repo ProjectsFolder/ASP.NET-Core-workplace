@@ -1,12 +1,12 @@
 ﻿using WebTest.Attributes;
-using WebTest.Domains.User.Repositories;
+using WebTest.Domains.OrgStructure.Repositories;
 using WebTest.Dto.User.Request;
 using WebTest.Dto.User.Response;
+using WebTest.Models.OrgStructure;
 using WebTest.Services;
 using WebTest.Transformers.User;
-using WebTest.Utils;
 
-namespace WebTest.Domains.User.Handlers
+namespace WebTest.Domains.OrgStructure.Handlers
 {
     [Service]
     public class CreateUser(
@@ -21,11 +21,11 @@ namespace WebTest.Domains.User.Handlers
                 return null;
             }
 
-            var user = new Models.User.User()
+            var user = new User()
             {
                 Login = dto.Login,
-                Password = AuthService.HashPassword(dto.Password),
             };
+            user.Password = AuthService.HashPassword(user, dto.Password);
 
             userRepository.Save(user);
 

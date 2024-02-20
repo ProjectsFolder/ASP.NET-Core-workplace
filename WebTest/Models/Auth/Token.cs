@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using WebTest.Models.OrgStructure;
 
 namespace WebTest.Models.Auth
 {
@@ -14,7 +15,7 @@ namespace WebTest.Models.Auth
         public int UserId { get; set; }
 
         [ForeignKey("UserId")]
-        public User.User User { get; set; } = null!;
+        public User User { get; set; } = null!;
 
         public string GetId()
         {

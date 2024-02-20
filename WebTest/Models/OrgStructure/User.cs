@@ -1,4 +1,4 @@
-﻿namespace WebTest.Models.User
+﻿namespace WebTest.Models.OrgStructure
 {
     public class User : BaseModel
     {

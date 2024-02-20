@@ -1,9 +1,9 @@
 ﻿using WebTest.Attributes;
-using WebTest.Domains.User.Repositories;
+using WebTest.Domains.OrgStructure.Repositories;
 using WebTest.Dto.User.Response;
 using WebTest.Transformers.User;
 
-namespace WebTest.Domains.User.Handlers
+namespace WebTest.Domains.OrgStructure.Handlers
 {
     [Service]
     public class ListUsers(
