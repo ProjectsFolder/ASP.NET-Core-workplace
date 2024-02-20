@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using WebTest.Models.Auth;
 using WebTest.Models.OrgStructure;
 using WebTest.Services;
+using WebTest.Services.Database;
 using WebTest.Utils;
 
 namespace WebTest.Tests
@@ -75,9 +76,10 @@ namespace WebTest.Tests
 
         protected void ReinitializeDatabase()
         {
-            db.Users.RemoveRange(db.Users);
             db.Tokens.RemoveRange(db.Tokens);
+            db.Users.RemoveRange(db.Users);
             Seeding();
+            db.SaveChanges();
         }
 
         private void Seeding()
@@ -85,7 +87,6 @@ namespace WebTest.Tests
             var user = new User() { Login = "test" };
             user.Password = AuthService.HashPassword(user, "test");
             db.Users.Add(user);
-            db.SaveChanges();
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using WebTest.Models.Auth;
-using WebTest.Services;
+using WebTest.Services.Database;
 
 namespace WebTest.Domains.Auth.Repositories
 {

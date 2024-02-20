@@ -5,6 +5,7 @@ using WebTest.Dto.Auth.Response;
 using WebTest.Exeptions.Concrete;
 using WebTest.Models.Auth;
 using WebTest.Services;
+using WebTest.Services.Database;
 using WebTest.Utils;
 
 namespace WebTest.Domains.Auth.Handlers

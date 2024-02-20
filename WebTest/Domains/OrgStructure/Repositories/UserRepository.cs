@@ -1,4 +1,4 @@
-﻿using WebTest.Services;
+﻿using WebTest.Services.Database;
 using UserModel = WebTest.Models.OrgStructure.User;
 
 namespace WebTest.Domains.OrgStructure.Repositories

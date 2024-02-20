@@ -1,4 +1,4 @@
-﻿using WebTest.Services;
+﻿using WebTest.Services.Database;
 
 namespace WebTest.Domains.Auth.Repositories
 {

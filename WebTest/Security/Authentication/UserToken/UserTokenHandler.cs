@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
-using WebTest.Services;
+using WebTest.Services.Database;
 
 namespace WebTest.Security.Authentication.UserToken
 {

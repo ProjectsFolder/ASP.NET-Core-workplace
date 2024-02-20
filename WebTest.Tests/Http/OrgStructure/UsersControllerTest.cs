@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Text.Json.Nodes;
 using WebTest.Models.OrgStructure;
+using WebTest.Utils;
 
 namespace WebTest.Tests.Http.OrgStructure
 {
@@ -20,22 +21,25 @@ namespace WebTest.Tests.Http.OrgStructure
         [Fact]
         public async Task GetList()
         {
-            ReinitializeDatabase();
-
-            var user = new User()
+            await db.Transaction(async () =>
             {
-                Login = "auth_user",
-                Password = "password",
-            };
-            var token = AuthorizedAs(user);
-            var client = CreateClient(token);
-            var response = await client.GetAsync(routeUrl);
+                ReinitializeDatabase();
 
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+                var user = new User()
+                {
+                    Login = "user",
+                    Password = "password",
+                };
+                var token = AuthorizedAs(user);
+                var client = CreateClient(token);
+                var response = await client.GetAsync(routeUrl);
 
-            var content = await response.Content.ReadAsStringAsync();
-            var users = JsonValue.Parse(content)?["items"] as JsonArray;
-            var names = users?.Select(n => n?["UserName"]).ToArray();
+                Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+                var content = await response.Content.ReadAsStringAsync();
+                var users = JsonValue.Parse(content)?["items"] as JsonArray;
+                var names = users?.Select(n => n?["UserName"]).ToArray();
+            });
         }
     }
 }

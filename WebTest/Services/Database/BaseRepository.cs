@@ -1,6 +1,6 @@
 ﻿using WebTest.Models;
 
-namespace WebTest.Services
+namespace WebTest.Services.Database
 {
     public class BaseRepository
     {

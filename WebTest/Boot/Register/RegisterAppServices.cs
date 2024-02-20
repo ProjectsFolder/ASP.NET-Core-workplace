@@ -2,7 +2,6 @@
 using AspProblemDetailsFactory = Microsoft.AspNetCore.Mvc.Infrastructure.ProblemDetailsFactory;
 using ProblemDetailsFactory = WebTest.Exeptions.ProblemDetailsFactory;
 using Microsoft.EntityFrameworkCore;
-using WebTest.Services;
 using System.Reflection;
 using WebTest.Transformers;
 using WebTest.Security.Authentication.UserToken;
@@ -11,6 +10,7 @@ using WebTest.Attributes;
 using WebTest.Jobs;
 using NCrontab;
 using WebTest.Services.Jobs;
+using WebTest.Services.Database;
 
 namespace WebTest.Boot.Register
 {
