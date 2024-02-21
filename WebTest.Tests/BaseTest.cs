@@ -1,10 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Runtime.CompilerServices;
-using System.Xml.Linq;
 using WebTest.Models.Auth;
 using WebTest.Models.OrgStructure;
 using WebTest.Services;

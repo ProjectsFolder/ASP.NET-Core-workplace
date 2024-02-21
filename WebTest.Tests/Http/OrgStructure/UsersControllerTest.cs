@@ -1,9 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using System.Net;
-using System.Text.Json.Nodes;
 using WebTest.Models.OrgStructure;
-using WebTest.Services.Database;
 
 namespace WebTest.Tests.Http.OrgStructure
 {

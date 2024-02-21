@@ -1,6 +1,4 @@
-﻿using WebTest.Models.OrgStructure;
-using WebTest.Services;
-using WebTest.Services.Database;
+﻿using WebTest.Services.Database;
 
 namespace WebTest.Tests.Seeders
 {

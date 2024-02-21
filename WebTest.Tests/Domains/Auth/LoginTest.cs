@@ -1,9 +1,6 @@
-using Microsoft.Extensions.DependencyInjection;
 using WebTest.Domains.Auth.Handlers;
 using WebTest.Dto.Auth.Request;
 using WebTest.Exeptions.Concrete;
-using WebTest.Services;
-using WebTest.Services.Database;
 
 namespace WebTest.Tests.Domains.Auth
 {
