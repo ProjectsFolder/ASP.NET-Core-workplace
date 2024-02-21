@@ -1,20 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using WebTest.Models;
 using WebTest.Models.Auth;
 using WebTest.Models.OrgStructure;
 
 namespace WebTest.Services.Database
 {
-    public sealed class DataContext : DbContext
+    public sealed class DataContext(DbContextOptions<DataContext> options) : DbContext(options)
     {
         public DbSet<User> Users { get; set; } = null!;
 
         public DbSet<Token> Tokens { get; set; } = null!;
-
-        public DataContext(DbContextOptions<DataContext> options) : base(options)
-        {
-            Database.Migrate();
-        }
 
         public void InsertOrUpdate<T>(T model)
             where T : BaseModel
@@ -30,8 +26,6 @@ namespace WebTest.Services.Database
             {
                 set.Add(model);
             }
-
-            SaveChanges();
         }
 
         public T Transaction<T>(Func<T> func)
@@ -43,37 +37,7 @@ namespace WebTest.Services.Database
                 try
                 {
                     result = func();
-                    SaveChanges();
                     transaction.Commit();
-
-                } catch (Exception)
-                {
-                    transaction.Rollback();
-                    throw;
-                }
-            }
-            else
-            {
-                result = func();
-                SaveChanges();
-            }
-
-            return result;
-        }
-
-        public void Transaction(Action action)
-        {
-            if (Database.CurrentTransaction == null)
-            {
-                using var transaction = Database.BeginTransaction();
-                action();
-                SaveChanges();
-                try
-                {
-                    action();
-                    SaveChanges();
-                    transaction.Commit();
-
                 }
                 catch (Exception)
                 {
@@ -83,9 +47,35 @@ namespace WebTest.Services.Database
             }
             else
             {
-                action();
-                SaveChanges();
+                result = func();
             }
+
+            return result;
+        }
+
+        public async Task<T> TransactionAsync<T>(Func<Task<T>> func)
+        {
+            T? result;
+            if (Database.CurrentTransaction == null)
+            {
+                using var transaction = Database.BeginTransaction();
+                try
+                {
+                    result = await func();
+                    transaction.Commit();
+                }
+                catch (Exception)
+                {
+                    transaction.Rollback();
+                    throw;
+                }
+            }
+            else
+            {
+                result = await func();
+            }
+
+            return result;
         }
     }
 }

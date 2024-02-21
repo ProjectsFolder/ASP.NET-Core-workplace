@@ -1,3 +1,4 @@
+using Microsoft.Extensions.DependencyInjection;
 using WebTest.Services;
 
 namespace WebTest.Tests.Services

@@ -9,7 +9,11 @@ namespace WebTest.Services.Database
         public void AddContext(DataContext context) => this.context = context;
 
         public void Save<T>(T model)
-            where T : BaseModel => context.InsertOrUpdate(model);
+            where T : BaseModel
+        {
+            context.InsertOrUpdate(model);
+            context.SaveChanges();
+        }
 
         public void Delete<T>(T model)
             where T : BaseModel

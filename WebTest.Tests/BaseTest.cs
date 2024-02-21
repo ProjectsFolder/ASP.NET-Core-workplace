@@ -1,9 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Runtime.CompilerServices;
+using System.Xml.Linq;
 using WebTest.Models.Auth;
 using WebTest.Models.OrgStructure;
 using WebTest.Services;
 using WebTest.Services.Database;
+using WebTest.Tests.Seeders;
 using WebTest.Utils;
 
 namespace WebTest.Tests
@@ -11,45 +17,41 @@ namespace WebTest.Tests
     public abstract class BaseTest : IClassFixture<TestWebApplicationFactory<Program>>
     {
         private readonly TestWebApplicationFactory<Program> factory;
-        protected IServiceScope scope;
-        protected ConfigService configService;
+        protected IServiceProvider services;
         protected DataContext db;
 
         public BaseTest(TestWebApplicationFactory<Program> factory)
         {
             this.factory = factory;
-            scope = factory.Services.CreateScope();
-            var db = GetService<DataContext>();
-            this.db = db ?? throw new Exception("Db servcie not found");
+            services = factory.Services.CreateScope().ServiceProvider;
+            db = services.GetService<DataContext>() ?? throw new Exception("DataContext not found");
+            ReinitializeDatabase();
+        }
 
-            var configService = GetService<ConfigService>();
-            this.configService = configService ?? throw new Exception("Config servcie not found");
+        protected T? GetService<T>()
+        {
+            return services.GetService<T>();
         }
 
         protected HttpClient CreateClient(
             string? authToken = default,
             WebApplicationFactoryClientOptions? options = default)
         {
-            if (options == null)
-            {
-                options = new WebApplicationFactoryClientOptions()
-                {
-                    AllowAutoRedirect = false
-                };
-            }
+            options ??= new WebApplicationFactoryClientOptions() { AllowAutoRedirect = false };
 
             var client = factory.CreateClient(options);
             if (authToken != null)
             {
+                var config = GetService<ConfigService>();
 #pragma warning disable CS8604 // Возможно, аргумент-ссылка, допускающий значение NULL.
-                client.DefaultRequestHeaders.Add(configService.Get("UserTokenHeaderName", "Authorization"), $"Bearer {authToken}");
+                client.DefaultRequestHeaders.Add(config?.Get("UserTokenHeaderName", "Authorization"), $"Bearer {authToken}");
 #pragma warning restore CS8604 // Возможно, аргумент-ссылка, допускающий значение NULL.
             }
 
             return client;
         }
 
-        protected string AuthorizedAs(User user)
+        protected static string AuthorizedAs(User user, DataContext db)
         {
             db.Users.Add(user);
 
@@ -68,25 +70,20 @@ namespace WebTest.Tests
             return token.Value;
         }
 
-        protected T? GetService<T>()
-            where T : class
+        private void ReinitializeDatabase()
         {
-            return scope.ServiceProvider.GetService(typeof(T)) as T;
-        }
-
-        protected void ReinitializeDatabase()
-        {
-            db.Tokens.RemoveRange(db.Tokens);
-            db.Users.RemoveRange(db.Users);
-            Seeding();
+            var tableNames = db.Model.GetEntityTypes()
+                .Select(t => t.GetTableName())
+                .Distinct()
+                .ToList();
+            db.Database.ExecuteSqlRaw("PRAGMA ignore_check_constraints = 1");
+            foreach (var tableName in tableNames)
+            {
+                db.Database.ExecuteSqlRaw("DELETE FROM " + tableName);
+            }
+            db.Database.ExecuteSqlRaw("PRAGMA ignore_check_constraints = 0");
+            BaseSeeder.Seed(db);
             db.SaveChanges();
-        }
-
-        private void Seeding()
-        {
-            var user = new User() { Login = "test" };
-            user.Password = AuthService.HashPassword(user, "test");
-            db.Users.Add(user);
         }
     }
 }

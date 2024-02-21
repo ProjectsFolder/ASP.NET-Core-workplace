@@ -1,7 +1,9 @@
-﻿using System.Net;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json.Linq;
+using System.Net;
 using System.Text.Json.Nodes;
 using WebTest.Models.OrgStructure;
-using WebTest.Utils;
+using WebTest.Services.Database;
 
 namespace WebTest.Tests.Http.OrgStructure
 {
@@ -21,25 +23,28 @@ namespace WebTest.Tests.Http.OrgStructure
         [Fact]
         public async Task GetList()
         {
-            await db.Transaction(async () =>
+            var user = new User()
             {
-                ReinitializeDatabase();
+                Login = "user",
+                Password = "password",
+            };
+            var token = AuthorizedAs(user, db);
+            var client = CreateClient(token);
+            var response = await client.GetAsync(routeUrl);
 
-                var user = new User()
-                {
-                    Login = "user",
-                    Password = "password",
-                };
-                var token = AuthorizedAs(user);
-                var client = CreateClient(token);
-                var response = await client.GetAsync(routeUrl);
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-                Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            var content = await response.Content.ReadAsStringAsync();
 
-                var content = await response.Content.ReadAsStringAsync();
-                var users = JsonValue.Parse(content)?["items"] as JsonArray;
-                var names = users?.Select(n => n?["UserName"]).ToArray();
-            });
+            dynamic json = JObject.Parse(content);
+            var data = (JArray) json.items;
+            List<string> logins = [];
+            foreach (dynamic item in (JArray)json.items)
+            {
+                logins.Add((string)item.login);
+            }
+
+            Assert.Empty(logins.Except(new[] { "test", "user" }));
         }
     }
 }

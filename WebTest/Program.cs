@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using WebTest.Boot.Configure;
 using WebTest.Boot.Register;
 using WebTest.Jobs;
 
@@ -15,6 +16,7 @@ app.UseRouting();
 app.MapControllers();
 app.UseExceptionHandler();
 app.UseAuthorization();
+app.DatabaseMigrate();
 
 app.MapGet("/", () => "App started!");
 

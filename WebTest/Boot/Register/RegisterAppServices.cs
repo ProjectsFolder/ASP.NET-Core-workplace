@@ -42,7 +42,7 @@ namespace WebTest.Boot.Register
                 options.HeaderName = config.GetValue<string>("UserTokenHeaderName") ?? "Authorization";
             });
 
-            builder.Services.AddDbContext<DataContext>(options => options.UseSqlite(config.GetConnectionString("WebApiDatabase")), ServiceLifetime.Scoped);
+            builder.Services.AddDbContext<DataContext>(options => options.UseSqlite(config.GetConnectionString("WebApiDatabase")));
 
             var assembly = Assembly.GetExecutingAssembly();
             var repositoryTypes = assembly.GetTypes()
