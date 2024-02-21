@@ -17,7 +17,6 @@ namespace WebTest.Tests.Domains.Auth
             var response = handler?.Handle(dto);
 
             var token = db.Tokens.FirstOrDefault(t => t.Value == response.Token);
-            var temp = db.Users.ToArray();
 
             Assert.NotNull(token);
         }
