@@ -11,7 +11,8 @@ namespace WebTest.Boot.Configure
         {
             lock (locker)
             {
-                var context = application.Services.GetService(typeof(DataContext)) as DataContext;
+                using var scope = application.Services.CreateScope();
+                var context = scope.ServiceProvider.GetService<DataContext>();
                 context?.Database.Migrate();
             }
         }
