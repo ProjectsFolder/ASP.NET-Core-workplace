@@ -5,7 +5,7 @@ using WebTest.Models.OrgStructure;
 
 namespace WebTest.Services.Database
 {
-    public sealed class DataContext(DbContextOptions<DataContext> options) : DbContext(options)
+    public sealed class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbContext(options)
     {
         public DbSet<User> Users { get; set; } = null!;
 

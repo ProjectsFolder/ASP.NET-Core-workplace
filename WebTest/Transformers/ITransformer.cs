@@ -1,7 +1,7 @@
 ﻿namespace WebTest.Transformers
 {
-    public interface ITransformer<From, To>
+    public interface ITransformer<TFrom, TTo>
     {
-        To Transform(From from);
+        TTo Transform(TFrom from);
     }
 }

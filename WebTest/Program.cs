@@ -9,7 +9,7 @@ builder.AddAppServices();
 builder.AddTimeServices();
 builder.AddUserServices();
 builder.AddAuthServices();
-builder.AddCronJob<TestJob>("* * * * *");
+builder.AddCronJob<DeleteExpiredTokens>("* * * * *");
 var app = builder.Build();
 
 app.UseRouting();

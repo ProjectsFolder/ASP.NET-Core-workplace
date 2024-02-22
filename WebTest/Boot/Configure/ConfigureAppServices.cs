@@ -12,7 +12,7 @@ namespace WebTest.Boot.Configure
             lock (locker)
             {
                 using var scope = application.Services.CreateScope();
-                var context = scope.ServiceProvider.GetService<DataContext>();
+                var context = scope.ServiceProvider.GetService<DatabaseContext>();
                 context?.Database.Migrate();
             }
         }

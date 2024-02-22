@@ -8,7 +8,7 @@ using WebTest.Services.Database;
 
 namespace WebTest.Security.Authentication.UserToken
 {
-    public class UserTokenHandler(IOptionsMonitor<UserTokenOptions> options, ILoggerFactory logger, UrlEncoder encoder, DataContext dataContext)
+    public class UserTokenHandler(IOptionsMonitor<UserTokenOptions> options, ILoggerFactory logger, UrlEncoder encoder, DatabaseContext dataContext)
         : AuthenticationHandler<UserTokenOptions>(options, logger, encoder)
     {
         protected override Task<AuthenticateResult> HandleAuthenticateAsync()

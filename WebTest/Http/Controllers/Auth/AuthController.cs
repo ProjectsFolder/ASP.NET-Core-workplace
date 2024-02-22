@@ -4,7 +4,7 @@ using WebTest.Domains.Auth.Handlers;
 using WebTest.Dto.Auth.Request;
 using WebTest.Security.Authentication.UserToken;
 
-namespace WebTest.Http.Actions.Auth
+namespace WebTest.Http.Controllers.Auth
 {
     public class AuthController : AppController
     {

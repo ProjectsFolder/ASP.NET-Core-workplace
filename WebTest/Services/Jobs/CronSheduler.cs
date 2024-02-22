@@ -41,9 +41,9 @@ namespace WebTest.Services.Jobs
                 try
                 {
                     var job = (ICronJob)serviceProvider.GetRequiredService(run);
-                    job.Run(stoppingToken);
+                    Task.Factory.StartNew(() => job.Run(stoppingToken));
                 }
-                catch (Exception)
+                catch
                 {
                     // todo: logging
                 }

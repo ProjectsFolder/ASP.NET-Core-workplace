@@ -1,5 +1,4 @@
-﻿using WebTest.Attributes;
-using WebTest.Domains.Auth.Repositories;
+﻿using WebTest.Domains.Auth.Repositories;
 using WebTest.Dto.Auth.Request;
 using WebTest.Dto.Auth.Response;
 using WebTest.Exeptions.Concrete;
@@ -10,27 +9,21 @@ using WebTest.Utils;
 
 namespace WebTest.Domains.Auth.Handlers
 {
-    [Service]
     public class Login(
-        DataContext context,
+        DatabaseContext context,
         TokenRepository tokenRepository,
         UserRepository userRepository
-        ) : IHandler<AuthDto, TokenDto>
+        ) : IRequestResponseHandler<AuthDto, TokenDto>
     {
-        public TokenDto? Handle(AuthDto? dto)
+        public TokenDto Handle(AuthDto dto)
         {
-            if (dto == null)
-            {
-                return null;
-            }
-
             return context.Transaction(() =>
             {
                 return Process(dto);
             });
         }
 
-        private TokenDto? Process(AuthDto dto)
+        private TokenDto Process(AuthDto dto)
         {
             var user = userRepository.GetUserByLogin(dto.Login) ?? throw new ApiException("User not found", 404);
             if (!AuthService.CheckPassword(user, dto.Password))

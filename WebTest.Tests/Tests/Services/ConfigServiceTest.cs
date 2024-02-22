@@ -1,6 +1,6 @@
 using WebTest.Services;
 
-namespace WebTest.Tests.Services
+namespace WebTest.Tests.Tests.Services
 {
     public class ConfigServiceTest(TestWebApplicationFactory<Program> factory) : BaseTest(factory)
     {
@@ -19,7 +19,7 @@ namespace WebTest.Tests.Services
             var service = GetService<ConfigService>();
             var value = service?.GetSection("ConnectionStrings", "WebApiDatabase");
 
-            Assert.Equal("Data Source=test.db", value);
+            Assert.Equal("Host=127.0.0.1:16002;Port=5432;Database=webtest_test;Username=postgres;Password=password", value);
         }
     }
 }

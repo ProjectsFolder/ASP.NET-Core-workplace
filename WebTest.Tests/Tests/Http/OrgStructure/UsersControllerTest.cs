@@ -2,7 +2,7 @@
 using System.Net;
 using WebTest.Models.OrgStructure;
 
-namespace WebTest.Tests.Http.OrgStructure
+namespace WebTest.Tests.Tests.Http.OrgStructure
 {
     public class UsersControllerTest(TestWebApplicationFactory<Program> factory) : BaseTest(factory)
     {
@@ -34,7 +34,7 @@ namespace WebTest.Tests.Http.OrgStructure
             var content = await response.Content.ReadAsStringAsync();
 
             dynamic json = JObject.Parse(content);
-            var data = (JArray) json.items;
+            var data = (JArray)json.items;
             List<string> logins = [];
             foreach (dynamic item in (JArray)json.items)
             {

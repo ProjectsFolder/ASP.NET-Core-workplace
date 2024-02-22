@@ -1,24 +1,20 @@
-﻿using WebTest.Attributes;
-using WebTest.Domains.Auth.Repositories;
+﻿using WebTest.Domains.Auth.Repositories;
 using WebTest.Services;
 
 namespace WebTest.Domains.Auth.Handlers
 {
-    [Service]
     public class Logout(
         AuthService authService,
         TokenRepository tokenRepository
-        ) : IHandler<object, object>
+        ) : ISimpleHandler
     {
-        public object? Handle(object? dto)
+        public void Handle()
         {
             var user = authService.GetCurrentUser();
             if (user != null)
             {
                 tokenRepository.DeleteAllByUser(user.Id);
             }
-
-            return null;
         }
     }
 }

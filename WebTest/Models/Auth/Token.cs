@@ -3,6 +3,7 @@ using WebTest.Models.OrgStructure;
 
 namespace WebTest.Models.Auth
 {
+    [Table("tokens")]
     public class Token : BaseModel
     {
         [Column("token")]

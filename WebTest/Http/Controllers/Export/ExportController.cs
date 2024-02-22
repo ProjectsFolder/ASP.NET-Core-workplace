@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebTest.Domains.Time.Interfaces;
-using WebTest.Http.Actions;
 using WebTest.Security.Authentication.ApiToken;
 
-namespace WebTest.Http.Actions.Export
+namespace WebTest.Http.Controllers.Export
 {
     [Authorize(AuthenticationSchemes = ApiTokenDefaults.SchemaName)]
     public class ExportController : AppController

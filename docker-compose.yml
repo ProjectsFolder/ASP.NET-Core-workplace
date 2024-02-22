@@ -1,0 +1,66 @@
+version: '3.4'
+
+networks:
+  backend:
+
+services:
+  ### ASP SERVER
+  webtest:
+    image: ${DOCKER_REGISTRY-}webtest
+    container_name: webtest
+    build:
+      dockerfile: WebTest/Dockerfile
+      context: .
+    depends_on:
+      - db
+    ports:
+      - "16000:8080"
+    networks:
+      - backend
+
+  ### POSTGRES DATABASE
+  db:
+    image: postgres:16-alpine
+    container_name: webtest_db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: webtest
+    volumes:
+      - ./Docker/mount/pgsql:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  ### PGADMIN
+  pgadmin:
+    image: dpage/pgadmin4:7.7
+    container_name: webtest_pgadmin
+    user: root
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@mail.com
+      PGADMIN_DEFAULT_PASSWORD: password
+    ports:
+      - "16001:80"
+    volumes:
+      - ./docker/mount/pgadmin:/var/lib/pgadmin
+      - ./docker/pgadmin/servers.json:/pgadmin4/servers.json
+    depends_on:
+      - db
+    networks:
+      - backend
+
+  ### POSTGRES TEST DATABASE
+  db_test:
+    image: postgres:16-alpine
+    container_name: webtest_db_test
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: webtest_test
+    ports:
+      - "16002:5432"
+    networks:
+      - backend

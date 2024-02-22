@@ -14,13 +14,13 @@ namespace WebTest.Tests
     {
         private readonly TestWebApplicationFactory<Program> factory;
         protected IServiceProvider services;
-        protected DataContext db;
+        protected DatabaseContext db;
 
         public BaseTest(TestWebApplicationFactory<Program> factory)
         {
             this.factory = factory;
             services = factory.Services.CreateScope().ServiceProvider;
-            db = services.GetService<DataContext>() ?? throw new Exception("DataContext not found");
+            db = services.GetService<DatabaseContext>() ?? throw new Exception("DataContext not found");
             ReinitializeDatabase();
         }
 
@@ -47,7 +47,7 @@ namespace WebTest.Tests
             return client;
         }
 
-        protected static string AuthorizedAs(User user, DataContext db)
+        protected static string AuthorizedAs(User user, DatabaseContext db)
         {
             db.Users.Add(user);
 
@@ -72,12 +72,10 @@ namespace WebTest.Tests
                 .Select(t => t.GetTableName())
                 .Distinct()
                 .ToList();
-            db.Database.ExecuteSqlRaw("PRAGMA ignore_check_constraints = 1");
             foreach (var tableName in tableNames)
             {
                 db.Database.ExecuteSqlRaw("DELETE FROM " + tableName);
             }
-            db.Database.ExecuteSqlRaw("PRAGMA ignore_check_constraints = 0");
             BaseSeeder.Seed(db);
             db.SaveChanges();
         }

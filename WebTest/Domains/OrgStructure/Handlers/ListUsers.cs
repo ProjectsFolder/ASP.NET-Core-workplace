@@ -1,17 +1,15 @@
-﻿using WebTest.Attributes;
-using WebTest.Domains.OrgStructure.Repositories;
+﻿using WebTest.Domains.OrgStructure.Repositories;
 using WebTest.Dto.User.Response;
 using WebTest.Transformers.User;
 
 namespace WebTest.Domains.OrgStructure.Handlers
 {
-    [Service]
     public class ListUsers(
         UserRepository userRepository,
         UserTransformer transformer
-        ) : IHandler<object, IEnumerable<UserDto>>
+        ) : IResponseHandler<IEnumerable<UserDto>>
     {
-        public IEnumerable<UserDto>? Handle(object? dto)
+        public IEnumerable<UserDto> Handle()
         {
             List<UserDto> response = [];
             var users = userRepository.GetUsers();

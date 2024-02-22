@@ -7,7 +7,7 @@ using WebTest.Services.Database;
 namespace WebTest.Services
 {
     [Service]
-    public sealed class AuthService(ClaimsPrincipal claims, DataContext dataContext)
+    public sealed class AuthService(ClaimsPrincipal claims, DatabaseContext dataContext)
     {
         public User? GetCurrentUser()
         {

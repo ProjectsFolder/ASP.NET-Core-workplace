@@ -4,7 +4,7 @@ using WebTest.Domains.OrgStructure.Handlers;
 using WebTest.Dto.User.Request;
 using WebTest.Security.Authentication.UserToken;
 
-namespace WebTest.Http.Actions.User
+namespace WebTest.Http.Controllers.User
 {
     [Authorize(AuthenticationSchemes = UserTokenDefaults.SchemaName)]
     public class UsersController : AppController

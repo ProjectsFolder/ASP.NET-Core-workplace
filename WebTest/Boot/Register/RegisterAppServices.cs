@@ -11,6 +11,7 @@ using WebTest.Jobs;
 using NCrontab;
 using WebTest.Services.Jobs;
 using WebTest.Services.Database;
+using WebTest.Domains;
 
 namespace WebTest.Boot.Register
 {
@@ -42,7 +43,7 @@ namespace WebTest.Boot.Register
                 options.HeaderName = config.GetValue<string>("UserTokenHeaderName") ?? "Authorization";
             });
 
-            builder.Services.AddDbContext<DataContext>(options => options.UseSqlite(config.GetConnectionString("WebApiDatabase")));
+            builder.Services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(config.GetConnectionString("WebApiDatabase")));
 
             var assembly = Assembly.GetExecutingAssembly();
             var repositoryTypes = assembly.GetTypes()
@@ -55,7 +56,7 @@ namespace WebTest.Boot.Register
                     var repository = Activator.CreateInstance(repositoryType);
                     if (repository is BaseRepository currentRepository)
                     {
-                        var dbContext = services.GetService<DataContext>();
+                        var dbContext = services.GetService<DatabaseContext>();
                         if (dbContext != null)
                         {
                             currentRepository.AddContext(dbContext);
@@ -78,6 +79,14 @@ namespace WebTest.Boot.Register
             foreach (var transformerType in transformerTypes)
             {
                 builder.Services.AddScoped(transformerType);
+            }
+
+            var handlerTypes = assembly.GetTypes()
+                .Where(type => type.GetInterfaces().Contains(typeof(IHandler)) && !type.IsInterface)
+                .ToList();
+            foreach (var handlerType in handlerTypes)
+            {
+                builder.Services.AddScoped(handlerType);
             }
 
             var dependencyTypes = assembly.GetTypes()

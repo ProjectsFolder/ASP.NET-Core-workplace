@@ -1,9 +1,6 @@
 ﻿namespace WebTest.Domains
 {
-    public interface IHandler<Request, Response>
-        where Request : class
-        where Response : class
+    public interface IHandler
     {
-        public Response? Handle(Request? dto);
     }
 }

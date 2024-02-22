@@ -2,7 +2,7 @@ using WebTest.Domains.Auth.Handlers;
 using WebTest.Dto.Auth.Request;
 using WebTest.Exeptions.Concrete;
 
-namespace WebTest.Tests.Domains.Auth
+namespace WebTest.Tests.Tests.Domains.Auth
 {
     public class LoginTest(TestWebApplicationFactory<Program> factory) : BaseTest(factory)
     {
