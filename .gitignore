@@ -364,3 +364,4 @@ FodyWeavers.xsd
 /WebTest/local.db
 /WebTest/local.db-shm
 /WebTest/local.db-wal
+/docker/mount
