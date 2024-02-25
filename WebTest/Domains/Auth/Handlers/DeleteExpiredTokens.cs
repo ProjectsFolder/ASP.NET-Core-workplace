@@ -1,14 +1,18 @@
 ﻿using WebTest.Domains.Auth.Repositories;
+using WebTest.Domains.Interfaces;
+using WebTest.Services;
 
 namespace WebTest.Domains.Auth.Handlers
 {
     public class DeleteExpiredToekns(
-        TokenRepository tokenRepository
+        TokenRepository tokenRepository,
+        ConfigService config
         ) : ISimpleHandler
     {
         public void Handle()
         {
-            tokenRepository.DeleteExpired();
+            var seconds = config.Get<int>("UserTokenExpiresSeconds");
+            tokenRepository.DeleteExpired(seconds);
         }
     }
 }

@@ -12,6 +12,7 @@ builder.AddAuthServices();
 builder.AddCronJob<DeleteExpiredTokens>("* * * * *");
 var app = builder.Build();
 
+//app.RequestEnableBuffering();
 app.UseRouting();
 app.MapControllers();
 app.UseExceptionHandler();

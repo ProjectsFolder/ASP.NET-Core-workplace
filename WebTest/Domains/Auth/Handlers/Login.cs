@@ -1,4 +1,5 @@
 ﻿using WebTest.Domains.Auth.Repositories;
+using WebTest.Domains.Interfaces;
 using WebTest.Dto.Auth.Request;
 using WebTest.Dto.Auth.Response;
 using WebTest.Exeptions.Concrete;

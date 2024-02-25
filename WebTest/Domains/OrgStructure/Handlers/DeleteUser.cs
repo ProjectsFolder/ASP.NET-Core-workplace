@@ -1,5 +1,6 @@
-﻿using WebTest.Domains.OrgStructure.Repositories;
-using WebTest.Dto.User.Request;
+﻿using WebTest.Domains.Interfaces;
+using WebTest.Domains.OrgStructure.Repositories;
+using WebTest.Dto.OrgStructure.Request;
 using WebTest.Exeptions.Concrete;
 
 namespace WebTest.Domains.OrgStructure.Handlers

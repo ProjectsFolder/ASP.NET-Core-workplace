@@ -1,4 +1,5 @@
 ﻿using WebTest.Domains.Auth.Repositories;
+using WebTest.Domains.Interfaces;
 using WebTest.Services;
 
 namespace WebTest.Domains.Auth.Handlers

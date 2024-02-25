@@ -1,5 +1,5 @@
 ﻿using WebTest.Domains.Time.Interfaces;
-using WebTest.Dto.User.Response;
+using WebTest.Dto.OrgStructure.Response;
 
 namespace WebTest.Transformers.User
 {

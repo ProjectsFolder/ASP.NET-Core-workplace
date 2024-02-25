@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WebTest.Dto.User.Request
+namespace WebTest.Dto.OrgStructure.Request
 {
     public class DeleteDto
     {

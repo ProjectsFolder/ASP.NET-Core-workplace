@@ -1,4 +1,4 @@
-﻿namespace WebTest.Dto.User.Response
+﻿namespace WebTest.Dto.OrgStructure.Response
 {
     public class UserDto
     {

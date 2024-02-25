@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WebTest.Domains;
+using WebTest.Domains.Interfaces;
 using WebTest.Http.Responses;
 
 namespace WebTest.Http.Controllers

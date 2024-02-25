@@ -6,9 +6,10 @@ namespace WebTest.Services
     public class ConfigService(IConfiguration configuration)
     {
         public T? Get<T>(string key, T? defaultValue = default)
-            where T : class
         {
-            return configuration.GetValue(typeof(T), key) as T ?? defaultValue;
+            var value = configuration.GetValue(typeof(T), key);
+
+            return value is T result ? result : defaultValue;
         }
 
         public string? GetSection(string section, string key, string? defaultValue = default)

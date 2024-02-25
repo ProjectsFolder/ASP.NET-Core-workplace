@@ -47,7 +47,14 @@ namespace WebTest.Tests
             return client;
         }
 
-        protected static string AuthorizedAs(User user, DatabaseContext db)
+        protected HttpClient CreateClient(User user)
+        {
+            var token = AuthorizedAs(user);
+
+            return CreateClient(token);
+        }
+
+        protected string AuthorizedAs(User user)
         {
             db.Users.Add(user);
 

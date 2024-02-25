@@ -11,7 +11,7 @@ using WebTest.Jobs;
 using NCrontab;
 using WebTest.Services.Jobs;
 using WebTest.Services.Database;
-using WebTest.Domains;
+using WebTest.Domains.Interfaces;
 
 namespace WebTest.Boot.Register
 {
@@ -92,7 +92,7 @@ namespace WebTest.Boot.Register
             var dependencyTypes = assembly.GetTypes()
                 .Where(type => type.GetCustomAttributes()
                     .Select(e => e.GetType())
-                    .Contains(typeof(Service))
+                    .Contains(typeof(ServiceAttribute))
                 )
                 .ToList();
             foreach (var dependencyType in dependencyTypes)

@@ -1,5 +1,6 @@
-﻿using WebTest.Domains.OrgStructure.Repositories;
-using WebTest.Dto.User.Response;
+﻿using WebTest.Domains.Interfaces;
+using WebTest.Domains.OrgStructure.Repositories;
+using WebTest.Dto.OrgStructure.Response;
 using WebTest.Transformers.User;
 
 namespace WebTest.Domains.OrgStructure.Handlers

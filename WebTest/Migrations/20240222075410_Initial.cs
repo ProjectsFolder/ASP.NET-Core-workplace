@@ -23,6 +23,7 @@ namespace WebTest.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_users", x => x.id);
+                    table.UniqueConstraint("UK_users_login", x => x.login);
                 });
 
             migrationBuilder.CreateTable(

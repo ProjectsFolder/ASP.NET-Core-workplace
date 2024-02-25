@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json.Linq;
 using System.Net;
 using WebTest.Models.OrgStructure;
+using WebTest.Dto.OrgStructure.Request;
+using System.Net.Http.Json;
 
 namespace WebTest.Tests.Tests.Http.OrgStructure
 {
@@ -25,8 +27,7 @@ namespace WebTest.Tests.Tests.Http.OrgStructure
                 Login = "user",
                 Password = "password",
             };
-            var token = AuthorizedAs(user, db);
-            var client = CreateClient(token);
+            var client = CreateClient(user);
             var response = await client.GetAsync(routeUrl);
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -42,6 +43,52 @@ namespace WebTest.Tests.Tests.Http.OrgStructure
             }
 
             Assert.Empty(logins.Except(new[] { "test", "user" }));
+        }
+
+        [Fact]
+        public async Task CreateUser()
+        {
+            var user = new User()
+            {
+                Login = "user",
+                Password = "password",
+            };
+
+            var dto = new CreateDto()
+            {
+                Login = "user2",
+                Password = "password2",
+            };
+            var json = JsonContent.Create(dto);
+            var client = CreateClient(user);
+            var response = await client.PostAsync(routeUrl, json);
+
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            var check = db.Users.FirstOrDefault(t => t.Login == dto.Login);
+
+            Assert.NotNull(check);
+        }
+
+        [Fact]
+        public async Task CreateUserWithNotUiniqueLogin()
+        {
+            var user = new User()
+            {
+                Login = "user",
+                Password = "password",
+            };
+
+            var dto = new CreateDto()
+            {
+                Login = "user",
+                Password = "password2",
+            };
+            var json = JsonContent.Create(dto);
+            var client = CreateClient(user);
+            var response = await client.PostAsync(routeUrl, json);
+
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
     }
 }

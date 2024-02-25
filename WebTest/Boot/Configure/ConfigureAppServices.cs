@@ -16,5 +16,14 @@ namespace WebTest.Boot.Configure
                 context?.Database.Migrate();
             }
         }
+
+        public static void RequestEnableBuffering(this WebApplication application)
+        {
+            application.Use(async (context, next) =>
+            {
+                context.Request.EnableBuffering();
+                await next();
+            });
+        }
     }
 }

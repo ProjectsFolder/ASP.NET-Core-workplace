@@ -1,4 +1,4 @@
-﻿namespace WebTest.Domains
+﻿namespace WebTest.Domains.Interfaces
 {
     public interface IHandler
     {
