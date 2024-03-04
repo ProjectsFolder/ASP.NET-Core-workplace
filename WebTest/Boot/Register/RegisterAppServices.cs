@@ -12,6 +12,8 @@ using NCrontab;
 using WebTest.Services.Jobs;
 using WebTest.Services.Database;
 using WebTest.Domains.Interfaces;
+using System.Net.Mail;
+using System.Net;
 
 namespace WebTest.Boot.Register
 {
@@ -21,17 +23,12 @@ namespace WebTest.Boot.Register
         {
             var config = builder.Configuration;
 
+            builder.Services.AddControllers();
             builder.Services.AddHttpContextAccessor();
-            builder.Services.AddTransient<AspProblemDetailsFactory, ProblemDetailsFactory>();
             builder.Services.AddTransient(services => {
                 var service = services.GetService<IHttpContextAccessor>()?.HttpContext?.User;
                 return service ?? throw new Exception("Service not found");
             });
-
-            builder.Services.AddControllers();
-
-            builder.Services.AddExceptionHandler<ExceptionHandler>();
-            builder.Services.AddProblemDetails();
 
             builder.Services.AddAuthentication().AddScheme<ApiTokenOptions, ApiTokenHandler>(ApiTokenDefaults.SchemaName, options =>
             {
@@ -42,6 +39,18 @@ namespace WebTest.Boot.Register
             {
                 options.HeaderName = config.GetValue<string>("UserTokenHeaderName") ?? "Authorization";
             });
+        }
+
+        public static void AddExceptionServices(this WebApplicationBuilder builder)
+        {
+            builder.Services.AddTransient<AspProblemDetailsFactory, ProblemDetailsFactory>();
+            builder.Services.AddExceptionHandler<ExceptionHandler>();
+            builder.Services.AddProblemDetails();
+        }
+
+        public static void AddDbServices(this WebApplicationBuilder builder)
+        {
+            var config = builder.Configuration;
 
             builder.Services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(config.GetConnectionString("WebApiDatabase")));
 
@@ -68,6 +77,11 @@ namespace WebTest.Boot.Register
                     throw new Exception("Repository injection error");
                 });
             }
+        }
+
+        public static void AddLocalServices(this WebApplicationBuilder builder)
+        {
+            var assembly = Assembly.GetExecutingAssembly();
 
             var transformerTypes = assembly.GetTypes()
                 .Where(type => type.GetInterfaces()
@@ -97,8 +111,48 @@ namespace WebTest.Boot.Register
                 .ToList();
             foreach (var dependencyType in dependencyTypes)
             {
-                builder.Services.AddScoped(dependencyType);
+                var attr = dependencyType.GetCustomAttribute<ServiceAttribute>();
+                if (attr == null)
+                {
+                    continue;
+                }
+
+                if (attr.Type == ServiceType.Transient)
+                {
+                    builder.Services.AddTransient(dependencyType);
+                }
+                else if (attr.Type == ServiceType.Scoped)
+                {
+                    builder.Services.AddScoped(dependencyType);
+                }
+                else
+                {
+                    builder.Services.AddSingleton(dependencyType);
+                }
             }
+        }
+
+        public static void AddSmtpClient(this WebApplicationBuilder builder)
+        {
+            var config = builder.Configuration;
+
+            builder.Services.AddSingleton(services =>
+            {
+                var host = config.GetSection("Mail")["Host"];
+                var username = config.GetSection("Mail")["Username"];
+                var password = config.GetSection("Mail")["Password"];
+                if (!int.TryParse(config.GetSection("Mail")["Port"], out int port))
+                {
+                    port = 0;
+                }
+
+                return new SmtpClient(host, port)
+                {
+                    EnableSsl = false,
+                    UseDefaultCredentials = false,
+                    Credentials = new NetworkCredential(username, password)
+                };
+            });
         }
 
         public static void AddCronJob<T>(this WebApplicationBuilder builder, string cronExpression)

@@ -6,7 +6,7 @@ using WebTest.Services;
 namespace WebTest.Migrations
 {
     /// <inheritdoc />
-    public partial class CreateUsers : Migration
+    public partial class AddUsers : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -2,7 +2,7 @@
 
 namespace WebTest.Services.Database
 {
-    public class BaseRepository
+    public abstract class BaseRepository
     {
         protected DatabaseContext context = null!;
 

@@ -10,11 +10,15 @@ namespace WebTest.Domains.Auth.Repositories
             context.SaveChanges();
         }
 
-        public void DeleteExpired(int seconds)
+        public int DeleteExpired(int seconds)
         {
             var time = DateTime.UtcNow.AddSeconds(-seconds);
-            context.Tokens.RemoveRange(context.Tokens.Where(t => t.CreatedAt < time));
+            var toBeRemoved = context.Tokens.Where(t => t.CreatedAt < time).ToList();
+            var removedCount = toBeRemoved.Count;
+            context.Tokens.RemoveRange(toBeRemoved);
             context.SaveChanges();
+
+            return removedCount;
         }
     }
 }

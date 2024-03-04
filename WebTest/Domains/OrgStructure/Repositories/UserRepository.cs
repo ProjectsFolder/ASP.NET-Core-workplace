@@ -1,12 +1,12 @@
-﻿using WebTest.Services.Database;
-using UserModel = WebTest.Models.OrgStructure.User;
+﻿using WebTest.Models.OrgStructure;
+using WebTest.Services.Database;
 
 namespace WebTest.Domains.OrgStructure.Repositories
 {
     public class UserRepository : BaseRepository
     {
-        public IEnumerable<UserModel> GetUsers() => context.Users;
+        public IEnumerable<User> GetUsers() => context.Users;
 
-        public UserModel? GetUser(int id) => context.Users.FirstOrDefault(u => u.Id == id);
+        public User? GetUser(int id) => context.Users.FirstOrDefault(u => u.Id == id);
     }
 }

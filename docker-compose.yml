@@ -64,3 +64,14 @@ services:
       - "16002:5432"
     networks:
       - backend
+
+  ### MAIL
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: webtest_mailhog
+    restart: always
+    ports:
+      - "16003:8025"
+      - "16004:1025"
+    networks:
+      - backend

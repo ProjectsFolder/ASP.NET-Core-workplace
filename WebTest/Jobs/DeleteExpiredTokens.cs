@@ -8,7 +8,7 @@ namespace WebTest.Jobs
         public Task Run(CancellationToken token = default)
         {
             var scope = serviceProvider.CreateScope();
-            var handler = scope.ServiceProvider.GetService<DeleteExpiredToekns>();
+            var handler = scope.ServiceProvider.GetService<Domains.Auth.Handlers.DeleteExpiredTokens>();
             handler?.Handle();
 
             return Task.CompletedTask;

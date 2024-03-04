@@ -8,7 +8,7 @@ namespace WebTest.Tests.Seeders
     {
         public static void Seed(DatabaseContext context)
         {
-            var user = new User() { Login = "test" };
+            var user = new User() { Login = "test", Email = "test@mail.com" };
             user.Password = AuthService.HashPassword(user, "test");
             context.Users.Add(user);
         }

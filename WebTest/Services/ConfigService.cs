@@ -2,8 +2,8 @@
 
 namespace WebTest.Services
 {
-    [Service]
-    public class ConfigService(IConfiguration configuration)
+    [Service(type: ServiceType.Singleton)]
+    public sealed class ConfigService(IConfiguration configuration)
     {
         public T? Get<T>(string key, T? defaultValue = default)
         {

@@ -11,6 +11,9 @@ namespace WebTest.Models.OrgStructure
         [Column("password")]
         public string Password { get; set; } = string.Empty;
 
+        [Column("email")]
+        public string? Email { get; set; } = null;
+
         public string GetId()
         {
             return Id.ToString();

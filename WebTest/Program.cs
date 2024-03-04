@@ -7,8 +7,10 @@ using WebTest.Jobs;
 var builder = WebApplication.CreateBuilder(args);
 builder.AddAppServices();
 builder.AddTimeServices();
-builder.AddUserServices();
-builder.AddAuthServices();
+builder.AddExceptionServices();
+builder.AddDbServices();
+builder.AddLocalServices();
+builder.AddSmtpClient();
 builder.AddCronJob<DeleteExpiredTokens>("* * * * *");
 var app = builder.Build();
 
