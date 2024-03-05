@@ -14,6 +14,7 @@ using WebTest.Services.Database;
 using WebTest.Domains.Interfaces;
 using System.Net.Mail;
 using System.Net;
+using Microsoft.AspNetCore.Http.Features;
 
 namespace WebTest.Boot.Register
 {
@@ -38,6 +39,16 @@ namespace WebTest.Boot.Register
             builder.Services.AddAuthentication().AddScheme<UserTokenOptions, UserTokenHandler>(UserTokenDefaults.SchemaName, options =>
             {
                 options.HeaderName = config.GetValue<string>("UserTokenHeaderName") ?? "Authorization";
+            });
+
+            builder.Services.Configure<FormOptions>(x =>
+            {
+                x.ValueLengthLimit = int.MaxValue;
+                x.MultipartBodyLengthLimit = long.MaxValue;
+            });
+            builder.WebHost.ConfigureKestrel(serverOptions =>
+            {
+                serverOptions.Limits.MaxRequestBodySize = long.MaxValue;
             });
         }
 

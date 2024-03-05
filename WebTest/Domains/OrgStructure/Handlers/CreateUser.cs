@@ -2,6 +2,8 @@
 using WebTest.Domains.OrgStructure.Repositories;
 using WebTest.Dto.OrgStructure.Request;
 using WebTest.Dto.OrgStructure.Response;
+using WebTest.Http.Responses;
+using WebTest.Http.Transformers;
 using WebTest.Models.OrgStructure;
 using WebTest.Services;
 using WebTest.Transformers.User;
@@ -11,9 +13,9 @@ namespace WebTest.Domains.OrgStructure.Handlers
     public class CreateUser(
         UserRepository userRepository,
         UserTransformer transformer
-        ) : IRequestResponseHandler<CreateDto, UserDto>
+        ) : IRequestResponseHandler<CreateDto, SuccessDto>
     {
-        public UserDto Handle(CreateDto dto)
+        public SuccessDto Handle(CreateDto dto)
         {
             var user = new User()
             {
@@ -23,7 +25,7 @@ namespace WebTest.Domains.OrgStructure.Handlers
 
             userRepository.Save(user);
 
-            return transformer.Transform(user);
+            return SuccessResponseTransformer.Build(user, transformer);
         }
     }
 }

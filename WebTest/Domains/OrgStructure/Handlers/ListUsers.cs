@@ -1,6 +1,7 @@
 ﻿using WebTest.Domains.Interfaces;
 using WebTest.Domains.OrgStructure.Repositories;
-using WebTest.Dto.OrgStructure.Response;
+using WebTest.Http.Responses;
+using WebTest.Http.Transformers;
 using WebTest.Transformers.User;
 
 namespace WebTest.Domains.OrgStructure.Handlers
@@ -8,18 +9,13 @@ namespace WebTest.Domains.OrgStructure.Handlers
     public class ListUsers(
         UserRepository userRepository,
         UserTransformer transformer
-        ) : IResponseHandler<IEnumerable<UserDto>>
+        ) : IResponseHandler<SuccessDto>
     {
-        public IEnumerable<UserDto> Handle()
+        public SuccessDto Handle()
         {
-            List<UserDto> response = [];
             var users = userRepository.GetUsers();
-            foreach (var user in users)
-            {
-                response.Add(transformer.Transform(user));
-            }
 
-            return response;
+            return SuccessResponseTransformer.Build(users, transformer);
         }
     }
 }

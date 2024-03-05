@@ -21,5 +21,11 @@ namespace WebTest.Services.Database
             context.Remove(model);
             context.SaveChanges();
         }
+
+        public T? GetById<T>(int id)
+            where T : BaseModel
+        {
+            return context.Set<T>().Where(x => x.Id == id).FirstOrDefault();
+        }
     }
 }

@@ -13,10 +13,5 @@ namespace WebTest.Models.OrgStructure
 
         [Column("email")]
         public string? Email { get; set; } = null;
-
-        public string GetId()
-        {
-            return Id.ToString();
-        }
     }
 }

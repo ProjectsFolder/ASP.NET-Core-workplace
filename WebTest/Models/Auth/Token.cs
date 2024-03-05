@@ -17,10 +17,5 @@ namespace WebTest.Models.Auth
 
         [ForeignKey("UserId")]
         public User User { get; set; } = null!;
-
-        public string GetId()
-        {
-            return Id.ToString();
-        }
     }
 }

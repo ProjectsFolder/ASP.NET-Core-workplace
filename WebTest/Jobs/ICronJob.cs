@@ -2,6 +2,6 @@
 {
     public interface ICronJob
     {
-        Task Run(CancellationToken token = default);
+        void Run(CancellationToken token = default);
     }
 }

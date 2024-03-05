@@ -11,17 +11,7 @@ namespace WebTest.Http.Controllers
             where TRequest : class
             where TResponse : class
         {
-            var result = handler.Handle(request);
-
-            var response = new SuccessDto();
-            if (result is IEnumerable<object> items)
-            {
-                response.Items = items;
-            }
-            else
-            {
-                response.Item = result;
-            }
+            var response = handler.Handle(request);
 
             return Ok(response);
         }
@@ -37,17 +27,7 @@ namespace WebTest.Http.Controllers
         protected IActionResult Success<TResponse>(IResponseHandler<TResponse> handler)
             where TResponse : class
         {
-            var result = handler.Handle();
-
-            var response = new SuccessDto();
-            if (result is IEnumerable<object> items)
-            {
-                response.Items = items;
-            }
-            else
-            {
-                response.Item = result;
-            }
+            var response = handler.Handle();
 
             return Ok(response);
         }

@@ -13,7 +13,7 @@ namespace WebTest.Migrations
         {
             var password = AuthService.HashPassword(new Models.OrgStructure.User(), "password");
 
-            migrationBuilder.Sql($"INSERT INTO users (id, login, password) VALUES (1, 'admin', '{password}')");
+            migrationBuilder.Sql($"INSERT INTO users (login, password) VALUES ('admin', '{password}')");
         }
 
         /// <inheritdoc />

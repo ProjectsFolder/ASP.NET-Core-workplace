@@ -41,7 +41,7 @@ namespace WebTest.Services.Jobs
                 try
                 {
                     var job = (ICronJob)serviceProvider.GetRequiredService(run);
-                    Task.Factory.StartNew(() => job.Run(stoppingToken));
+                    Task.Factory.StartNew(() => job.Run(stoppingToken), stoppingToken);
                 }
                 catch
                 {

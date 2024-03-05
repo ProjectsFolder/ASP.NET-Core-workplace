@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WebTest.Models;
 using WebTest.Models.Auth;
+using WebTest.Models.Files;
 using WebTest.Models.OrgStructure;
 
 namespace WebTest.Services.Database
@@ -10,6 +11,8 @@ namespace WebTest.Services.Database
         public DbSet<User> Users { get; set; } = null!;
 
         public DbSet<Token> Tokens { get; set; } = null!;
+
+        public DbSet<UserFile> Files { get; set; } = null!;
 
         public void InsertOrUpdate<T>(T model)
             where T : BaseModel
@@ -52,15 +55,14 @@ namespace WebTest.Services.Database
             return result;
         }
 
-        public async Task<T> TransactionAsync<T>(Func<Task<T>> func)
+        public void Transaction(Action action)
         {
-            T? result;
             if (Database.CurrentTransaction == null)
             {
                 using var transaction = Database.BeginTransaction();
                 try
                 {
-                    result = await func();
+                    action();
                     transaction.Commit();
                 }
                 catch (Exception)
@@ -71,10 +73,8 @@ namespace WebTest.Services.Database
             }
             else
             {
-                result = await func();
+                action();
             }
-
-            return result;
         }
     }
 }
