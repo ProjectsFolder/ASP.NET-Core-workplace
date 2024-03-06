@@ -18,6 +18,18 @@ services:
     networks:
       - backend
 
+  ### CONSOLE APP
+  console:
+    image: webtest_console
+    container_name: webtest_console
+    build:
+      dockerfile: WebTest.Console/Dockerfile
+      context: .
+    depends_on:
+      - webtest
+    networks:
+      - backend
+
   ### POSTGRES DATABASE
   db:
     image: postgres:16-alpine

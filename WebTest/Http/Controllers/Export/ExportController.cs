@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using WebTest.Domains.Time.Interfaces;
+using WebTest.Attributes.ActionFilter;
 using WebTest.Security.Authentication.ApiToken;
 
 namespace WebTest.Http.Controllers.Export
@@ -9,9 +9,10 @@ namespace WebTest.Http.Controllers.Export
     public class ExportController : AppController
     {
         [HttpGet]
-        public IActionResult Export(ITimeService timeService)
+        [PortFilter(port: 8082)]
+        public IActionResult Export()
         {
-            return Ok(new { Time = timeService.GetTime() });
+            return Ok(new { port = HttpContext.Connection.LocalPort });
         }
     }
 }

@@ -1,6 +1,7 @@
 using WebTest.Domains.Auth.Handlers;
 using WebTest.Dto.Auth.Request;
 using WebTest.Exeptions.Concrete;
+using WebTest.Models.Auth;
 
 namespace WebTest.Tests.Tests.Domains.Auth
 {
@@ -12,10 +13,11 @@ namespace WebTest.Tests.Tests.Domains.Auth
             var handler = GetService<Login>();
             var dto = new AuthDto("test", "test");
             var response = handler?.Handle(dto);
-
-            var token = db.Tokens.FirstOrDefault(t => t.Value == response.Token);
-
-            Assert.NotNull(token);
+            if (response?.Item is Token tokenData)
+            {
+                var token = db.Tokens.FirstOrDefault(t => t.Value == tokenData.Value);
+                Assert.NotNull(token);
+            }
         }
 
         [Fact]

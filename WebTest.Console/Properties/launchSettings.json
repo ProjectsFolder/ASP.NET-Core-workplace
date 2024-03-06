@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "WebTest.Console": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}

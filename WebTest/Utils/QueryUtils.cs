@@ -14,7 +14,9 @@ namespace WebTest.Utils
             var property = Expression.Property(parameter, propertyName);
             var method = typeof(TContains).GetMethod("Equals", [typeof(TContains)]);
             var someValue = Expression.Constant(contains, typeof(TContains));
+#pragma warning disable CS8604 // Possible null reference argument.
             var compare = Expression.Call(property, method, someValue);
+#pragma warning restore CS8604 // Possible null reference argument.
 
             return query.Where(Expression.Lambda<Func<TModel, bool>>(compare, parameter));
         }
