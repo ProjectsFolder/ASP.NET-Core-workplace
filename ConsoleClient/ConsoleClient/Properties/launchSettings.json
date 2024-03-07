@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "WebTest.Console": {
+    "ConsoleClient": {
       "commandName": "Project"
     },
     "Docker": {

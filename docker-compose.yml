@@ -1,5 +1,7 @@
 version: '3.4'
 
+name: webtest
+
 networks:
   backend:
 
@@ -18,17 +20,15 @@ services:
     networks:
       - backend
 
-  ### CONSOLE APP
+  ### CONSOLE CLIENT
   console:
     image: webtest_console
     container_name: webtest_console
     build:
-      dockerfile: WebTest.Console/Dockerfile
-      context: .
+      dockerfile: ConsoleClient/Dockerfile
+      context: ConsoleClient
     depends_on:
       - webtest
-    networks:
-      - backend
 
   ### POSTGRES DATABASE
   db:

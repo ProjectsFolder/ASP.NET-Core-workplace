@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.RegularExpressions;
 using WebTest.Attributes.ActionFilter;
+using WebTest.Domains.Time.Interfaces;
 using WebTest.Security.Authentication.ApiToken;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace WebTest.Http.Controllers.Export
 {
@@ -9,10 +12,9 @@ namespace WebTest.Http.Controllers.Export
     public class ExportController : AppController
     {
         [HttpGet]
-        [PortFilter(port: 8082)]
-        public IActionResult Export()
+        public IActionResult Export(ITimeService timeService)
         {
-            return Ok(new { port = HttpContext.Connection.LocalPort });
+            return Ok(new { time = timeService.GetTime() });
         }
     }
 }
