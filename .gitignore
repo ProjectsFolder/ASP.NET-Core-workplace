@@ -365,3 +365,4 @@ FodyWeavers.xsd
 /WebTest/local.db-shm
 /WebTest/local.db-wal
 /docker/mount
+/WebTest/swagger.json
