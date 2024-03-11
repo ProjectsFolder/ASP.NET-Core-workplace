@@ -1,6 +1,6 @@
 ﻿using WebTest.Domains.Auth.Repositories;
 using WebTest.Domains.Interfaces;
-using WebTest.Dto.Auth.Request;
+using WebTest.Dto.Auth.Command;
 using WebTest.Dto.Auth.Response;
 using WebTest.Exeptions.Concrete;
 using WebTest.Http.Responses;
@@ -16,9 +16,9 @@ namespace WebTest.Domains.Auth.Handlers
         DatabaseContext context,
         TokenRepository tokenRepository,
         UserRepository userRepository
-        ) : IRequestResponseHandler<AuthDto, SuccessDto>
+        ) : IRequestResponseHandler<AuthCommand, SuccessDto>
     {
-        public SuccessDto Handle(AuthDto dto)
+        public SuccessDto Handle(AuthCommand dto)
         {
             return context.Transaction(() =>
             {
@@ -26,7 +26,7 @@ namespace WebTest.Domains.Auth.Handlers
             });
         }
 
-        private SuccessDto Process(AuthDto dto)
+        private SuccessDto Process(AuthCommand dto)
         {
             var user = userRepository.GetUserByLogin(dto.Login) ?? throw new ApiException("User not found", 404);
             if (!AuthService.CheckPassword(user, dto.Password))

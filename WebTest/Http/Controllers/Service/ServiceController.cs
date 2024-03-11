@@ -8,6 +8,7 @@ using WebTest.Services.Database;
 namespace WebTest.Http.Controllers.Service
 {
     [ServiceRoute]
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class ServiceController : AppController
     {
         [HttpPost("migrate")]

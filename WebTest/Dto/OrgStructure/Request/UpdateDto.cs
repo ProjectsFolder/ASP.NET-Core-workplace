@@ -6,8 +6,6 @@ namespace WebTest.Dto.OrgStructure.Request
 {
     public class UpdateDto
     {
-        public int Id { get; set; }
-
         [Required]
         [Unique<User>("login", "id")]
         public required string Login { get; set; }

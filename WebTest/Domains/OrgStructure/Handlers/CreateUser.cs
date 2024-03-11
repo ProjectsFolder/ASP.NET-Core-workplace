@@ -1,7 +1,6 @@
 ﻿using WebTest.Domains.Interfaces;
 using WebTest.Domains.OrgStructure.Repositories;
-using WebTest.Dto.OrgStructure.Request;
-using WebTest.Dto.OrgStructure.Response;
+using WebTest.Dto.OrgStructure.Command;
 using WebTest.Http.Responses;
 using WebTest.Http.Transformers;
 using WebTest.Models.OrgStructure;
@@ -13,9 +12,9 @@ namespace WebTest.Domains.OrgStructure.Handlers
     public class CreateUser(
         UserRepository userRepository,
         UserTransformer transformer
-        ) : IRequestResponseHandler<CreateDto, SuccessDto>
+        ) : IRequestResponseHandler<CreateCommand, SuccessDto>
     {
-        public SuccessDto Handle(CreateDto dto)
+        public SuccessDto Handle(CreateCommand dto)
         {
             var user = new User()
             {

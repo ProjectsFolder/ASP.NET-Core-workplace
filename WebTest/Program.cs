@@ -11,6 +11,7 @@ builder.AddExceptionServices();
 builder.AddDbServices();
 builder.AddLocalServices();
 builder.AddSmtpClient();
+builder.AddSwagger();
 builder.AddCronJob<DeleteExpiredTokens>("* * * * *");
 var app = builder.Build();
 
@@ -20,6 +21,7 @@ app.MapControllers();
 app.UseExceptionHandler();
 app.UseAuthorization();
 app.DatabaseMigrate();
+app.GenerateSwagger();
 
 app.MapGet("/", () => "App started!");
 

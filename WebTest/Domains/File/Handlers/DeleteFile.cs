@@ -1,6 +1,6 @@
 ﻿using WebTest.Domains.File.Repositories;
 using WebTest.Domains.Interfaces;
-using WebTest.Dto.File.Request;
+using WebTest.Dto.File.Command;
 using WebTest.Exeptions.Concrete;
 using WebTest.Models.Files;
 using WebTest.Services;
@@ -13,9 +13,9 @@ namespace WebTest.Domains.File.Handlers
         FileService fileService,
         DatabaseContext databaseContext,
         FileRepository fileRepository)
-        : IRequestHandler<DeleteDto>
+        : IRequestHandler<DeleteCommand>
     {
-        public void Handle(DeleteDto dto)
+        public void Handle(DeleteCommand dto)
         {
             var user = authService.GetCurrentUser() ?? throw new ApiException("User not found", 403);
 

@@ -15,6 +15,8 @@ using WebTest.Domains.Interfaces;
 using System.Net.Mail;
 using System.Net;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.OpenApi.Models;
+using WebTest.Boot.Swagger;
 
 namespace WebTest.Boot.Register
 {
@@ -25,6 +27,7 @@ namespace WebTest.Boot.Register
             var config = builder.Configuration;
 
             builder.Services.AddControllers();
+            builder.Services.AddRouting(options => options.LowercaseUrls = true);
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddTransient(services => {
                 var service = services.GetService<IHttpContextAccessor>()?.HttpContext?.User;
@@ -163,6 +166,16 @@ namespace WebTest.Boot.Register
                     UseDefaultCredentials = false,
                     Credentials = new NetworkCredential(username, password)
                 };
+            });
+        }
+
+        public static void AddSwagger(this WebApplicationBuilder builder)
+        {
+            builder.Services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "WebTest API", Version = "v1" });
+                options.OperationFilter<AssignContentTypeFilter>();
+                options.EnableAnnotations();
             });
         }
 

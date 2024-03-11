@@ -1,4 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Extensions;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Swagger;
 using WebTest.Services.Database;
 
 namespace WebTest.Boot.Configure
@@ -24,6 +27,14 @@ namespace WebTest.Boot.Configure
                 context.Request.EnableBuffering();
                 await next();
             });
+        }
+
+        public static void GenerateSwagger(this WebApplication application)
+        {
+            var swagger = application.Services.GetService<ISwaggerProvider>();
+            var doc = swagger?.GetSwagger("v1", null, "/");
+            var swaggerFile = doc.SerializeAsJson(Microsoft.OpenApi.OpenApiSpecVersion.OpenApi3_0);
+            File.WriteAllText("swagger.json", swaggerFile);
         }
     }
 }

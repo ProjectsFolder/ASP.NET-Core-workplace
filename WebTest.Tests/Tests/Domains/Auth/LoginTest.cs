@@ -1,5 +1,5 @@
 using WebTest.Domains.Auth.Handlers;
-using WebTest.Dto.Auth.Request;
+using WebTest.Dto.Auth.Command;
 using WebTest.Exeptions.Concrete;
 using WebTest.Models.Auth;
 
@@ -11,7 +11,7 @@ namespace WebTest.Tests.Tests.Domains.Auth
         public void SuccessLogin()
         {
             var handler = GetService<Login>();
-            var dto = new AuthDto("test", "test");
+            var dto = new AuthCommand("test", "test");
             var response = handler?.Handle(dto);
             if (response?.Item is Token tokenData)
             {
@@ -24,7 +24,7 @@ namespace WebTest.Tests.Tests.Domains.Auth
         public void FailureLogin()
         {
             var handler = GetService<Login>();
-            var dto = new AuthDto("test", "password");
+            var dto = new AuthCommand("test", "password");
             Assert.Throws<ApiException>(() => handler?.Handle(dto));
         }
     }
