@@ -1,6 +1,6 @@
 ﻿namespace WebTest.Dto.OrgStructure.Command
 {
-    public class UpdateCommand
+    public class UpdateCommand : CommandBase
     {
         public int Id { get; set; }
 

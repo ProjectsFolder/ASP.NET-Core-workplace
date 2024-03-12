@@ -10,13 +10,13 @@ using WebTest.Utils;
 
 namespace WebTest.Tests
 {
-    public abstract class BaseTest : IClassFixture<TestWebApplicationFactory<Program>>
+    public abstract class TestBase : IClassFixture<TestWebApplicationFactory<Program>>
     {
         private readonly TestWebApplicationFactory<Program> factory;
         protected IServiceProvider services;
         protected DatabaseContext db;
 
-        public BaseTest(TestWebApplicationFactory<Program> factory)
+        public TestBase(TestWebApplicationFactory<Program> factory)
         {
             this.factory = factory;
             services = factory.Services.CreateScope().ServiceProvider;
@@ -24,9 +24,9 @@ namespace WebTest.Tests
             ReinitializeDatabase();
         }
 
-        protected T? GetService<T>()
+        protected T GetService<T>()
         {
-            return services.GetService<T>();
+            return services.GetService<T>() ?? throw new Exception("Service not found");
         }
 
         protected HttpClient CreateClient(

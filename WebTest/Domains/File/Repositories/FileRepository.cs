@@ -5,7 +5,7 @@ using WebTest.Utils;
 
 namespace WebTest.Domains.File.Repositories
 {
-    public class FileRepository : BaseRepository
+    public class FileRepository : RepositoryBase
     {
         public bool HasLinks(string path) => context.Files.Any(f => f.Path == path);
 

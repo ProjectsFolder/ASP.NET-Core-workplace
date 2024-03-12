@@ -1,8 +1,10 @@
-﻿namespace WebTest.Domains.Interfaces
+﻿using WebTest.Http.Responses;
+
+namespace WebTest.Domains.Interfaces
 {
     public interface IResponseHandler<TResponse> : IHandler
         where TResponse : class
     {
-        public TResponse Handle();
+        public SuccessDto<TResponse> Handle();
     }
 }

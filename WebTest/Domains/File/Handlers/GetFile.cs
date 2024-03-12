@@ -2,6 +2,8 @@
 using WebTest.Domains.Interfaces;
 using WebTest.Dto.File.Command;
 using WebTest.Exeptions.Concrete;
+using WebTest.Http.Responses;
+using WebTest.Http.Transformers;
 using WebTest.Models.Files;
 using WebTest.Services;
 
@@ -12,7 +14,7 @@ namespace WebTest.Domains.File.Handlers
         FileRepository fileRepository)
         : IRequestResponseHandler<GetCommand, UserFile>
     {
-        public UserFile Handle(GetCommand dto)
+        public SuccessDto<UserFile> Handle(GetCommand dto)
         {
             var user = authService.GetCurrentUser() ?? throw new ApiException("User not found", 403);
 
@@ -23,7 +25,7 @@ namespace WebTest.Domains.File.Handlers
                 throw new ApiException("File not found", 403);
             }
 
-            return file;
+            return SuccessResponseTransformer.Build(file);
         }
     }
 }

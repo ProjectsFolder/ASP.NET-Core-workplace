@@ -5,18 +5,25 @@ name: webtest
 networks:
   backend:
 
+volumes:
+  web_app:
+
 services:
   ### ASP SERVER
   webtest:
-    image: ${DOCKER_REGISTRY-}webtest
+    image: webtest
     container_name: webtest
     build:
       dockerfile: WebTest/Dockerfile
       context: .
     depends_on:
       - db
+      - db_test
     ports:
       - "16000:8080"
+    volumes:
+      - web_app:/app
+      - ./docker/mount/wwwroot:/app/wwwroot
     networks:
       - backend
 
@@ -40,7 +47,7 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: webtest
     volumes:
-      - ./Docker/mount/pgsql:/var/lib/postgresql/data
+      - ./docker/mount/pgsql:/var/lib/postgresql/data
     networks:
       - backend
 
@@ -87,3 +94,17 @@ services:
       - "16004:1025"
     networks:
       - backend
+
+  ## SWAGGER UI
+  swagger_ui:
+    image: swaggerapi/swagger-ui
+    container_name: webtest_swagger_ui
+    ports:
+      - "16006:8080"
+    depends_on:
+      - webtest
+    volumes:
+      - web_app:/app
+    environment:
+      SWAGGER_JSON: /app/openapi.json
+      #API_URL: ""

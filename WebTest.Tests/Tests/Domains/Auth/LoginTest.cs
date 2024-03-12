@@ -5,17 +5,17 @@ using WebTest.Models.Auth;
 
 namespace WebTest.Tests.Tests.Domains.Auth
 {
-    public class LoginTest(TestWebApplicationFactory<Program> factory) : BaseTest(factory)
+    public class LoginTest(TestWebApplicationFactory<Program> factory) : TestBase(factory)
     {
         [Fact]
         public void SuccessLogin()
         {
             var handler = GetService<Login>();
             var dto = new AuthCommand("test", "test");
-            var response = handler?.Handle(dto);
-            if (response?.Item is Token tokenData)
+            var response = handler.Handle(dto);
+            if (response.Item != null)
             {
-                var token = db.Tokens.FirstOrDefault(t => t.Value == tokenData.Value);
+                var token = db.Tokens.FirstOrDefault(t => t.Value == response.Item.Token);
                 Assert.NotNull(token);
             }
         }
@@ -25,7 +25,7 @@ namespace WebTest.Tests.Tests.Domains.Auth
         {
             var handler = GetService<Login>();
             var dto = new AuthCommand("test", "password");
-            Assert.Throws<ApiException>(() => handler?.Handle(dto));
+            Assert.Throws<ApiException>(() => handler.Handle(dto));
         }
     }
 }

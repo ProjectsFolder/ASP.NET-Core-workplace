@@ -3,7 +3,7 @@ using System.Web;
 
 namespace ConsoleClient.Commands
 {
-    internal class MigrateCommand : BaseCommand
+    internal class MigrateCommand : CommandBase
     {
         public override async Task<Result> Execute(Dictionary<string, string>? args = null)
         {

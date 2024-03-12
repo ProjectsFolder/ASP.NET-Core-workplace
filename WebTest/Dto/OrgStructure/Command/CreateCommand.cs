@@ -1,6 +1,6 @@
 ﻿namespace WebTest.Dto.OrgStructure.Command
 {
-    public class CreateCommand
+    public class CreateCommand : CommandBase
     {
         public required string Login { get; set; }
 

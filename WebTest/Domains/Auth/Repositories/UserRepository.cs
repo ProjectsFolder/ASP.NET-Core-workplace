@@ -3,7 +3,7 @@ using WebTest.Services.Database;
 
 namespace WebTest.Domains.Auth.Repositories
 {
-    public class UserRepository : BaseRepository
+    public class UserRepository : RepositoryBase
     {
         public User? GetUserByLogin(string username)
         {

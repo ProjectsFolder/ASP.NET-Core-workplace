@@ -3,8 +3,16 @@
     "Docker Compose": {
       "commandName": "DockerCompose",
       "commandVersion": "1.0",
+      "composeLaunchAction": "None",
+      "composeLaunchServiceName": "webtest",
       "serviceActions": {
-        "webtest": "StartDebugging"
+        "webtest": "StartDebugging",
+        "console": "StartWithoutDebugging",
+        "db": "StartWithoutDebugging",
+        "db_test": "StartWithoutDebugging",
+        "mailhog": "StartWithoutDebugging",
+        "pgadmin": "StartWithoutDebugging",
+        "swagger_ui": "StartWithoutDebugging"
       }
     }
   }

@@ -26,6 +26,7 @@ namespace WebTest.Boot.Register
         {
             var config = builder.Configuration;
 
+            builder.Services.AddCors();
             builder.Services.AddControllers();
             builder.Services.AddRouting(options => options.LowercaseUrls = true);
             builder.Services.AddHttpContextAccessor();
@@ -70,14 +71,14 @@ namespace WebTest.Boot.Register
 
             var assembly = Assembly.GetExecutingAssembly();
             var repositoryTypes = assembly.GetTypes()
-                .Where(type => type.BaseType == typeof(BaseRepository))
+                .Where(type => type.BaseType == typeof(RepositoryBase))
                 .ToList();
             foreach (var repositoryType in repositoryTypes)
             {
                 builder.Services.AddScoped(repositoryType, services =>
                 {
                     var repository = Activator.CreateInstance(repositoryType);
-                    if (repository is BaseRepository currentRepository)
+                    if (repository is RepositoryBase currentRepository)
                     {
                         var dbContext = services.GetService<DatabaseContext>();
                         if (dbContext != null)
@@ -171,11 +172,27 @@ namespace WebTest.Boot.Register
 
         public static void AddSwagger(this WebApplicationBuilder builder)
         {
+            var config = builder.Configuration;
+
             builder.Services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("v1", new OpenApiInfo { Title = "WebTest API", Version = "v1" });
-                options.OperationFilter<AssignContentTypeFilter>();
+                options.OperationFilter<PrepareFilter>();
                 options.EnableAnnotations();
+                options.AddSecurityDefinition(UserTokenDefaults.SchemaName, new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Name = config.GetValue<string>("UserTokenHeaderName") ?? "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Application security",
+                });
+                options.AddSecurityDefinition(ApiTokenDefaults.SchemaName, new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Name = config.GetValue<string>("ApiTokenHeaderName") ?? "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "External security",
+                });
             });
         }
 

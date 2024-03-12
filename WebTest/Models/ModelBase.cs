@@ -2,7 +2,7 @@
 
 namespace WebTest.Models
 {
-    public abstract class BaseModel
+    public abstract class ModelBase
     {
         [Column("id")]
         public int Id { get; set; } = 0;

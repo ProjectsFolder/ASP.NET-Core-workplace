@@ -1,5 +1,6 @@
 ﻿using WebTest.Domains.Interfaces;
 using WebTest.Domains.OrgStructure.Repositories;
+using WebTest.Dto.OrgStructure.Response;
 using WebTest.Http.Responses;
 using WebTest.Http.Transformers;
 using WebTest.Transformers.User;
@@ -9,9 +10,9 @@ namespace WebTest.Domains.OrgStructure.Handlers
     public class ListUsers(
         UserRepository userRepository,
         UserTransformer transformer
-        ) : IResponseHandler<SuccessDto>
+        ) : IResponseHandler<UserDto>
     {
-        public SuccessDto Handle()
+        public SuccessDto<UserDto> Handle()
         {
             var users = userRepository.GetUsers();
 

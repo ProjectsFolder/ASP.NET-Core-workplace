@@ -2,7 +2,7 @@ using WebTest.Services;
 
 namespace WebTest.Tests.Tests.Services
 {
-    public class ConfigServiceTest(TestWebApplicationFactory<Program> factory) : BaseTest(factory)
+    public class ConfigServiceTest(TestWebApplicationFactory<Program> factory) : TestBase(factory)
     {
         [Fact]
         public void GetConfig()

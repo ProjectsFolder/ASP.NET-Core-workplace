@@ -2,7 +2,7 @@
 
 namespace WebTest.Domains.Auth.Repositories
 {
-    public class TokenRepository : BaseRepository
+    public class TokenRepository : RepositoryBase
     {
         public void DeleteAllByUser(int userId)
         {

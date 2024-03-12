@@ -1,6 +1,6 @@
 ﻿namespace WebTest.Dto.File.Command
 {
-    public class ListCommand
+    public class ListCommand : CommandBase
     {
         public int Page { get; set; } = 0;
 

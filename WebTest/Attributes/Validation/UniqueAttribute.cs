@@ -9,7 +9,7 @@ namespace WebTest.Attributes.Validation
     public class UniqueAttribute<T>(
         string fieldName,
         string? routeIdKey = default) : ValidationAttribute
-        where T : BaseModel
+        where T : ModelBase
     {
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {

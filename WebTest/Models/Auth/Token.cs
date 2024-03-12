@@ -4,7 +4,7 @@ using WebTest.Models.OrgStructure;
 namespace WebTest.Models.Auth
 {
     [Table("tokens")]
-    public class Token : BaseModel
+    public class Token : ModelBase
     {
         [Column("token")]
         public string Value { get; set; } = string.Empty;

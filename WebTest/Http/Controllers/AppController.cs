@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebTest.Domains.Interfaces;
+using WebTest.Dto;
 using WebTest.Http.Responses;
 
 namespace WebTest.Http.Controllers
@@ -8,7 +9,7 @@ namespace WebTest.Http.Controllers
     public class AppController : ControllerBase
     {
         protected IActionResult Success<TRequest, TResponse>(IRequestResponseHandler<TRequest, TResponse> handler, TRequest request)
-            where TRequest : class
+            where TRequest : CommandBase
             where TResponse : class
         {
             var response = handler.Handle(request);
@@ -17,11 +18,11 @@ namespace WebTest.Http.Controllers
         }
 
         protected IActionResult Success<TRequest>(IRequestHandler<TRequest> handler, TRequest request)
-            where TRequest : class
+            where TRequest : CommandBase
         {
             handler.Handle(request);
 
-            return Ok(new SuccessDto());
+            return Ok(new SuccessDto<object>());
         }
 
         protected IActionResult Success<TResponse>(IResponseHandler<TResponse> handler)
@@ -36,7 +37,7 @@ namespace WebTest.Http.Controllers
         {
             handler.Handle();
 
-            return Ok(new SuccessDto());
+            return Ok(new SuccessDto<object>());
         }
     }
 }

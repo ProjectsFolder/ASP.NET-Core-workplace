@@ -1,6 +1,6 @@
 ﻿namespace ConsoleClient.Commands
 {
-    internal abstract class BaseCommand
+    internal abstract class CommandBase
     {
         public abstract Task<Result> Execute(Dictionary<string, string>? args = null);
 

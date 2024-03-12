@@ -3,7 +3,7 @@
 namespace WebTest.Models.OrgStructure
 {
     [Table("users")]
-    public class User : BaseModel
+    public class User : ModelBase
     {
         [Column("login")]
         public string Login { get; set; } = string.Empty;

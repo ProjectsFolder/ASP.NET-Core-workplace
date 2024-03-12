@@ -6,7 +6,7 @@ using System.Net.Http.Json;
 
 namespace WebTest.Tests.Tests.Http.OrgStructure
 {
-    public class UsersControllerTest(TestWebApplicationFactory<Program> factory) : BaseTest(factory)
+    public class UsersControllerTest(TestWebApplicationFactory<Program> factory) : TestBase(factory)
     {
         const string routeUrl = "/api/users";
 

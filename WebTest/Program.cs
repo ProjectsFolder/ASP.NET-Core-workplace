@@ -17,6 +17,12 @@ var app = builder.Build();
 
 //app.RequestEnableBuffering();
 app.UseRouting();
+app.UseCors(configure =>
+{
+    configure.AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader();
+});
 app.MapControllers();
 app.UseExceptionHandler();
 app.UseAuthorization();

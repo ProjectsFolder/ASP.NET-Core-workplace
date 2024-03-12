@@ -15,7 +15,7 @@ namespace WebTest.Services.Database
         public DbSet<UserFile> Files { get; set; } = null!;
 
         public void InsertOrUpdate<T>(T model)
-            where T : BaseModel
+            where T : ModelBase
         {
             var set = Set<T>();
 

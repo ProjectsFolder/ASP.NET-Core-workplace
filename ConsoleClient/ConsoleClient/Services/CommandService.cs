@@ -5,9 +5,9 @@ namespace ConsoleClient.Services
 {
     internal sealed class CommandService
     {
-        private readonly Dictionary<string, BaseCommand> commands = [];
+        private readonly Dictionary<string, CommandBase> commands = [];
 
-        public void AddCommand(BaseCommand command)
+        public void AddCommand(CommandBase command)
         {
             if (command.GetCommand() == string.Empty)
             {
@@ -31,7 +31,7 @@ namespace ConsoleClient.Services
                 args.Add(match.Groups[1].ToString(), match.Groups[2].ToString());
             }
 
-            if (!commands.TryGetValue(resultCommand, out BaseCommand? execute))
+            if (!commands.TryGetValue(resultCommand, out CommandBase? execute))
             {
                 Console.WriteLine($"Command \"{resultCommand}\" not found");
 

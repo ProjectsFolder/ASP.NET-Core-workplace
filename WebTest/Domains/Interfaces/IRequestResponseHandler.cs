@@ -1,9 +1,12 @@
-﻿namespace WebTest.Domains.Interfaces
+﻿using WebTest.Dto;
+using WebTest.Http.Responses;
+
+namespace WebTest.Domains.Interfaces
 {
     public interface IRequestResponseHandler<TRequest, TResponse> : IHandler
-        where TRequest : class
+        where TRequest : CommandBase
         where TResponse : class
     {
-        public TResponse Handle(TRequest dto);
+        public SuccessDto<TResponse> Handle(TRequest dto);
     }
 }

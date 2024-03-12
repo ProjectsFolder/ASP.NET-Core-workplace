@@ -1,6 +1,7 @@
 ﻿using WebTest.Domains.Interfaces;
 using WebTest.Domains.OrgStructure.Repositories;
 using WebTest.Dto.OrgStructure.Command;
+using WebTest.Dto.OrgStructure.Response;
 using WebTest.Exeptions.Concrete;
 using WebTest.Http.Responses;
 using WebTest.Http.Transformers;
@@ -13,9 +14,9 @@ namespace WebTest.Domains.OrgStructure.Handlers
     public class UpdateUser(
         UserRepository userRepository,
         UserTransformer transformer
-        ) : IRequestResponseHandler<UpdateCommand, SuccessDto>
+        ) : IRequestResponseHandler<UpdateCommand, UserDto>
     {
-        public SuccessDto Handle(UpdateCommand dto)
+        public SuccessDto<UserDto> Handle(UpdateCommand dto)
         {
             var user = userRepository.GetById<User>(dto.Id) ?? throw new ApiException("User not found", 404);
             user.Login = dto.Login;

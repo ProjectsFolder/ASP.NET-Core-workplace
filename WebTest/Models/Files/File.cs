@@ -4,7 +4,7 @@ using WebTest.Models.OrgStructure;
 namespace WebTest.Models.Files
 {
     [Table("files")]
-    public class UserFile : BaseModel
+    public class UserFile : ModelBase
     {
         [Column("created_at")]
         public DateTime CreatedAt { get; set; }

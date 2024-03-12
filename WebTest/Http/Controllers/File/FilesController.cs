@@ -4,6 +4,7 @@ using WebTest.Domains.File.Handlers;
 using WebTest.Dto.File.Command;
 using WebTest.Dto.File.Request;
 using WebTest.Dto.File.Response;
+using WebTest.Exeptions.Concrete;
 using WebTest.Http.Responses;
 using WebTest.Security.Authentication.UserToken;
 
@@ -30,9 +31,10 @@ namespace WebTest.Http.Controllers.File
         public IActionResult Download(int id, GetFile handler)
         {
             var command = new GetCommand { Id = id };
-            var file = handler.Handle(command);
+            var file = handler.Handle(command).Item ?? throw new ApiException("File not found", 404);
+            var stream = System.IO.File.OpenRead(file.Path);
 
-            return PhysicalFile(file.Path, file.ContentType, file.Name);
+            return File(stream, file.ContentType, file.Name);
         }
 
         [HttpPost]

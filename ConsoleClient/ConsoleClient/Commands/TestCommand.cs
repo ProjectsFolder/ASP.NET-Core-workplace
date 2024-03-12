@@ -1,7 +1,7 @@
 ﻿
 namespace ConsoleClient.Commands
 {
-    internal class TestCommand : BaseCommand
+    internal class TestCommand : CommandBase
     {
         public override async Task<Result> Execute(Dictionary<string, string>? args = null)
         {
