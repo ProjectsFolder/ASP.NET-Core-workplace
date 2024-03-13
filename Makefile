@@ -4,6 +4,7 @@ up:
 	sudo chmod 777 -R docker/mount
 	$(compose) up -d --build
 	docker image prune -f
+	docker volume prune -f
 
 down:
 	$(compose) down -v --remove-orphans

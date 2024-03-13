@@ -366,3 +366,4 @@ FodyWeavers.xsd
 /WebTest/local.db-wal
 /docker/mount
 /WebTest/openapi.json
+.mono/

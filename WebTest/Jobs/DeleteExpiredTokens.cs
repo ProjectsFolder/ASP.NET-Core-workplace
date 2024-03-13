@@ -1,14 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore.Infrastructure;
+﻿using WebTest.Services;
 using Handler = WebTest.Domains.Auth.Handlers.DeleteExpiredTokens;
 
 namespace WebTest.Jobs
 {
-    public class DeleteExpiredTokens(IServiceProvider serviceProvider) : ICronJob
+    public class DeleteExpiredTokens(ContainerService containerService) : ICronJob
     {
         public void Run(CancellationToken token = default)
         {
-            var scope = serviceProvider.CreateScope();
-            var handler = scope.ServiceProvider.GetService<Handler>();
+            var handler = containerService.GetService<Handler>();
             handler?.Handle();
         }
     }
