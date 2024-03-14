@@ -1,14 +1,15 @@
-﻿using WebTest.Jobs;
+﻿using System.Reflection;
+using WebTest.Jobs;
 
 namespace WebTest.Services.Jobs
 {
     public sealed class CronScheduler : BackgroundService
     {
-        private readonly IServiceProvider serviceProvider;
+        private readonly ContainerService serviceProvider;
         private readonly IReadOnlyCollection<CronRegistryEntry> cronJobs;
 
         public CronScheduler(
-            IServiceProvider serviceProvider,
+            ContainerService serviceProvider,
             IEnumerable<CronRegistryEntry> cronJobs)
         {
             this.serviceProvider = serviceProvider;
@@ -36,11 +37,11 @@ namespace WebTest.Services.Jobs
                 return;
             }
 
-            foreach (var run in currentRuns)
+            foreach (var runType in currentRuns)
             {
                 try
                 {
-                    var job = (ICronJob)serviceProvider.GetRequiredService(run);
+                    var job = (ICronJob)serviceProvider.GetRequiredService(runType, false);
                     Task.Factory.StartNew(() => job.Run(stoppingToken), stoppingToken);
                 }
                 catch

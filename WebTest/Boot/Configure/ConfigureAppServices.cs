@@ -30,11 +30,16 @@ namespace WebTest.Boot.Configure
 
         public static void GenerateSwagger(this WebApplication application)
         {
-            var host = application.Configuration.GetValue<string>("AppHost");
-            var swagger = application.Services.GetService<ISwaggerProvider>();
-            var doc = swagger?.GetSwagger("v1", host, "/");
-            var swaggerFile = doc.SerializeAsJson(Microsoft.OpenApi.OpenApiSpecVersion.OpenApi3_0);
-            File.WriteAllText("openapi.json", swaggerFile);
+            if (application.Environment.IsDevelopment())
+            {
+                application.UseSwagger();
+                application.UseSwaggerUI();
+            }
+            // var host = application.Configuration.GetValue<string>("AppHost");
+            // var swagger = application.Services.GetService<ISwaggerProvider>();
+            // var doc = swagger?.GetSwagger("v1", host, "/");
+            // var swaggerFile = doc.SerializeAsJson(Microsoft.OpenApi.OpenApiSpecVersion.OpenApi3_0);
+            // File.WriteAllText("openapi.json", swaggerFile);
         }
     }
 }

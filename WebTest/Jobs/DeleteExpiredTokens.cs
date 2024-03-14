@@ -7,8 +7,8 @@ namespace WebTest.Jobs
     {
         public void Run(CancellationToken token = default)
         {
-            var handler = containerService.GetService<Handler>();
-            handler?.Handle();
+            var handler = containerService.GetRequiredService<Handler>();
+            handler.Handle();
         }
     }
 }

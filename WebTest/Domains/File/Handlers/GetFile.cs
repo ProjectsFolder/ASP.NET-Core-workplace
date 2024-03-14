@@ -18,7 +18,7 @@ namespace WebTest.Domains.File.Handlers
         {
             var user = authService.GetCurrentUser() ?? throw new ApiException("User not found", 403);
 
-            var file = fileRepository.GetById<UserFile>(dto.Id) ?? throw new ApiException("File not found", 403);
+            var file = fileRepository.GetById(dto.Id) ?? throw new ApiException("File not found", 403);
 
             if (user.Id != file.UserId)
             {

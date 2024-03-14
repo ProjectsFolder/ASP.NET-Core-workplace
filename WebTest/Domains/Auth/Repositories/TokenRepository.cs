@@ -1,8 +1,9 @@
-﻿using WebTest.Services.Database;
+﻿using WebTest.Models.Auth;
+using WebTest.Services.Database;
 
 namespace WebTest.Domains.Auth.Repositories
 {
-    public class TokenRepository : RepositoryBase
+    public class TokenRepository : RepositoryBase<Token>
     {
         public void DeleteAllByUser(int userId)
         {

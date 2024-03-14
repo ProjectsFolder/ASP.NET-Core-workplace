@@ -1,7 +1,7 @@
 compose=docker-compose
 
 up:
-	sudo chmod 777 -R docker/mount
+	sudo chmod 777 -R docker
 	$(compose) up -d --build
 	docker image prune -f
 	docker volume prune -f

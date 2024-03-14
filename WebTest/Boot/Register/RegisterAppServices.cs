@@ -17,6 +17,7 @@ using System.Net;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.OpenApi.Models;
 using WebTest.Boot.Swagger;
+using WebTest.Services.Database.Interfaces;
 
 namespace WebTest.Boot.Register
 {
@@ -71,14 +72,16 @@ namespace WebTest.Boot.Register
 
             var assembly = Assembly.GetExecutingAssembly();
             var repositoryTypes = assembly.GetTypes()
-                .Where(type => type.BaseType == typeof(RepositoryBase))
+                .Where(type => type.BaseType != null
+                    && type.BaseType.IsGenericType
+                    && type.BaseType.GetGenericTypeDefinition() == typeof(RepositoryBase<>))
                 .ToList();
             foreach (var repositoryType in repositoryTypes)
             {
                 builder.Services.AddScoped(repositoryType, services =>
                 {
                     var repository = Activator.CreateInstance(repositoryType);
-                    if (repository is RepositoryBase currentRepository)
+                    if (repository is IRepository currentRepository)
                     {
                         var dbContext = services.GetService<DatabaseContext>();
                         if (dbContext != null)

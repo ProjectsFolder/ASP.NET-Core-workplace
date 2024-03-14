@@ -96,15 +96,15 @@ services:
       - backend
 
   ## SWAGGER UI
-  swagger_ui:
-    image: swaggerapi/swagger-ui
-    container_name: webtest_swagger_ui
-    ports:
-      - "16006:8080"
-    depends_on:
-      - webtest
-    volumes:
-      - web_app:/app
-    environment:
-      SWAGGER_JSON: /app/openapi.json
-      #API_URL: ""
+  # swagger_ui:
+  #   image: swaggerapi/swagger-ui
+  #   container_name: webtest_swagger_ui
+  #   ports:
+  #     - "16006:8080"
+  #   depends_on:
+  #     - webtest
+  #   volumes:
+  #     - web_app:/app
+  #   environment:
+  #     SWAGGER_JSON: /app/openapi.json
+  #     #API_URL: ""
