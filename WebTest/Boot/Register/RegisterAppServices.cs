@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.OpenApi.Models;
 using WebTest.Boot.Swagger;
 using WebTest.Services.Database.Interfaces;
+using Serilog;
 
 namespace WebTest.Boot.Register
 {
@@ -197,6 +198,13 @@ namespace WebTest.Boot.Register
                     Scheme = "External security",
                 });
             });
+        }
+
+        public static void AddSeriolog(this WebApplicationBuilder builder)
+        {
+            builder.Host.UseSerilog((context, services, configuration) => configuration
+                .ReadFrom.Configuration(context.Configuration)
+                .ReadFrom.Services(services));
         }
 
         public static void AddCronJob<T>(this WebApplicationBuilder builder, string cronExpression)

@@ -1,18 +1,20 @@
-﻿using System.Reflection;
-using WebTest.Jobs;
+﻿using WebTest.Jobs;
 
 namespace WebTest.Services.Jobs
 {
     public sealed class CronScheduler : BackgroundService
     {
         private readonly ContainerService serviceProvider;
+        private readonly LogService logService;
         private readonly IReadOnlyCollection<CronRegistryEntry> cronJobs;
 
         public CronScheduler(
             ContainerService serviceProvider,
+            LogService logService,
             IEnumerable<CronRegistryEntry> cronJobs)
         {
             this.serviceProvider = serviceProvider;
+            this.logService = logService;
             this.cronJobs = cronJobs.ToList();
         }
 
@@ -43,10 +45,11 @@ namespace WebTest.Services.Jobs
                 {
                     var job = (ICronJob)serviceProvider.GetRequiredService(runType, false);
                     Task.Factory.StartNew(() => job.Run(stoppingToken), stoppingToken);
+                    logService.Info("TASK run: {task}", runType.Name);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    // todo: logging
+                    logService.Error(ex.Message);
                 }
             }
         }

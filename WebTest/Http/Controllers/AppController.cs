@@ -5,8 +5,9 @@ using WebTest.Http.Responses;
 
 namespace WebTest.Http.Controllers
 {
+    [ApiController]
     [Route("api/[controller]")]
-    public class AppController : ControllerBase
+    public abstract class AppController : ControllerBase
     {
         protected IActionResult Success<TRequest, TResponse>(IRequestResponseHandler<TRequest, TResponse> handler, TRequest request)
             where TRequest : CommandBase

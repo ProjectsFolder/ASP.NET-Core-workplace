@@ -24,6 +24,7 @@ services:
     volumes:
       - web_app:/app
       - ./docker/mount/wwwroot:/app/wwwroot
+      - ./docker/mount/logs:/app/logs
     networks:
       - backend
 

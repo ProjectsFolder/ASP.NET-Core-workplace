@@ -1,36 +1,57 @@
-using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using WebTest.Boot.Configure;
 using WebTest.Boot.Register;
 using WebTest.Jobs;
 
-[assembly: ApiController]
-var builder = WebApplication.CreateBuilder(args);
-builder.AddAppServices();
-builder.AddTimeServices();
-builder.AddExceptionServices();
-builder.AddDbServices();
-builder.AddLocalServices();
-builder.AddSmtpClient();
-builder.AddSwagger();
-builder.AddCronJob<DeleteExpiredTokens>("* * * * *");
-var app = builder.Build();
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .CreateBootstrapLogger();
 
-//app.RequestEnableBuffering();
-app.UseRouting();
-app.UseCors(configure =>
+try
 {
-    configure.AllowAnyOrigin()
-        .AllowAnyMethod()
-        .AllowAnyHeader();
-});
-app.MapControllers();
-app.UseExceptionHandler();
-app.UseAuthorization();
-app.DatabaseMigrate();
-app.GenerateSwagger();
+    Log.Information("Starting web application");
 
-app.MapGet("/", () => "App started!");
+    var builder = WebApplication.CreateBuilder(args);
+    builder.AddSeriolog();
+    builder.AddAppServices();
+    builder.AddTimeServices();
+    builder.AddExceptionServices();
+    builder.AddDbServices();
+    builder.AddLocalServices();
+    builder.AddSmtpClient();
+    builder.AddSwagger();
+    builder.AddCronJob<DeleteExpiredTokens>("* * * * *");
+    var app = builder.Build();
 
-app.Run();
+    //app.RequestEnableBuffering();
+    app.UseSerilogRequestLogging();
+    app.UseRouting();
+    app.UseCors(configure =>
+    {
+        configure.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+    app.MapControllers();
+    app.UseExceptionHandler();
+    app.UseAuthorization();
+    app.DatabaseMigrate();
+    app.GenerateSwagger();
+
+    if (app.Environment.IsDevelopment())
+    {
+        app.MapGet("/", () => "App started!");
+    }
+
+    app.Run();
+}
+catch (Exception ex)
+{
+    Log.Fatal(ex, "Application terminated unexpectedly");
+}
+finally
+{
+    Log.CloseAndFlush();
+}
 
 public partial class Program { }
