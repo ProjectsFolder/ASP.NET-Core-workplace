@@ -4,11 +4,11 @@
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
     <DockerPublishLocally>False</DockerPublishLocally>
-    <ProjectGuid>c5fd6fda-d05e-4524-99ef-82c3c872628d</ProjectGuid>
-    <DockerLaunchAction>None</DockerLaunchAction>
+    <ProjectGuid>0ce6dfd6-5f1e-4219-b898-a0266b40dbf4</ProjectGuid>
+    <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>
-    <DockerServiceName>webtest</DockerServiceName>
-    <DockerComposeProjectName>webtest</DockerComposeProjectName>
+    <DockerServiceName>api</DockerServiceName>
+    <DockerComposeProjectName>apitest</DockerComposeProjectName>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.override.yml">

@@ -1,11 +1,11 @@
 {
   "Servers": {
     "1": {
-      "Name": "WebTest",
+      "Name": "ApiTest",
       "Group": "Servers",
       "Host": "db",
       "Port": 5432,
-      "MaintenanceDB": "webtest",
+      "MaintenanceDB": "apitest",
       "Username": "postgres",
       "SSLMode": "prefer"
     }

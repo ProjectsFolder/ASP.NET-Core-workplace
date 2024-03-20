@@ -1,68 +1,47 @@
 version: '3.4'
 
-name: webtest
+name: apitest
 
 networks:
   backend:
 
-volumes:
-  web_app:
-
 services:
-  ### ASP SERVER
-  webtest:
-    image: webtest
-    container_name: webtest
+  api:
+    image: apitest
+    container_name: apitest
     build:
-      dockerfile: WebTest/Dockerfile
+      dockerfile: ApiTest/Dockerfile
       context: .
     depends_on:
       - db
-      - db_test
     ports:
-      - "16000:8080"
-    volumes:
-      - web_app:/app
-      - ./docker/mount/wwwroot:/app/wwwroot
-      - ./docker/mount/logs:/app/logs
+      - "17000:8080"
     networks:
       - backend
 
-  ### CONSOLE CLIENT
-  console:
-    image: webtest_console
-    container_name: webtest_console
-    build:
-      dockerfile: ConsoleClient/Dockerfile
-      context: ConsoleClient
-    depends_on:
-      - webtest
-
-  ### POSTGRES DATABASE
   db:
     image: postgres:16-alpine
-    container_name: webtest_db
+    container_name: apitest_db
     restart: always
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: webtest
+      POSTGRES_DB: apitest
     volumes:
       - ./docker/mount/pgsql:/var/lib/postgresql/data
     networks:
       - backend
 
-  ### PGADMIN
   pgadmin:
     image: dpage/pgadmin4:7.7
-    container_name: webtest_pgadmin
+    container_name: apitest_pgadmin
     user: root
     restart: always
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@mail.com
       PGADMIN_DEFAULT_PASSWORD: password
     ports:
-      - "16001:80"
+      - "17001:80"
     volumes:
       - ./docker/mount/pgadmin:/var/lib/pgadmin
       - ./docker/pgadmin/servers.json:/pgadmin4/servers.json
@@ -70,42 +49,3 @@ services:
       - db
     networks:
       - backend
-
-  ### POSTGRES TEST DATABASE
-  db_test:
-    image: postgres:16-alpine
-    container_name: webtest_db_test
-    restart: always
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: webtest_test
-    ports:
-      - "16002:5432"
-    networks:
-      - backend
-
-  ### MAIL
-  mailhog:
-    image: mailhog/mailhog:latest
-    container_name: webtest_mailhog
-    restart: always
-    ports:
-      - "16003:8025"
-      - "16004:1025"
-    networks:
-      - backend
-
-  ## SWAGGER UI
-  # swagger_ui:
-  #   image: swaggerapi/swagger-ui
-  #   container_name: webtest_swagger_ui
-  #   ports:
-  #     - "16006:8080"
-  #   depends_on:
-  #     - webtest
-  #   volumes:
-  #     - web_app:/app
-  #   environment:
-  #     SWAGGER_JSON: /app/openapi.json
-  #     #API_URL: ""

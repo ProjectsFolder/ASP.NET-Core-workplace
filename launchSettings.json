@@ -4,15 +4,9 @@
       "commandName": "DockerCompose",
       "commandVersion": "1.0",
       "composeLaunchAction": "None",
-      "composeLaunchServiceName": "webtest",
+      "composeLaunchServiceName": "apitest",
       "serviceActions": {
-        "webtest": "StartDebugging",
-        "console": "StartWithoutDebugging",
-        "db": "StartWithoutDebugging",
-        "db_test": "StartWithoutDebugging",
-        "mailhog": "StartWithoutDebugging",
-        "pgadmin": "StartWithoutDebugging",
-        "swagger_ui": "StartWithoutDebugging"
+        "api": "StartDebugging"
       }
     }
   }
