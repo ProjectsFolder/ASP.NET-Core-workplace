@@ -1,5 +1,5 @@
 ﻿using Application.Common.Mappings;
-using Application.Users.Queries.GetUsers.Dto;
+using Application.Domains.Users.Queries.GetUsers.Dto;
 using System.Text.Json.Serialization;
 
 namespace Api.Responses.User;

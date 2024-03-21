@@ -1,4 +1,4 @@
-﻿namespace Application.Users.Queries.Common.Dto;
+﻿namespace Application.Common.Dto;
 
 public class PaginationDto<T>
 {

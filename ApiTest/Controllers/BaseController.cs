@@ -48,4 +48,16 @@ public class BaseController : ControllerBase
 
         return Ok(result);
     }
+
+    protected ActionResult Success(object? meta = null)
+    {
+        var result = new SuccessResponse<object>();
+
+        if (meta != null)
+        {
+            result.Meta = meta;
+        }
+
+        return Ok(result);
+    }
 }

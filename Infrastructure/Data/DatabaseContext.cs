@@ -1,6 +1,6 @@
 ﻿using Domain;
-using Infrastructure.Data.EntityConfiguration;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace Infrastructure.Data;
 
@@ -8,9 +8,11 @@ public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbCont
 {
     public DbSet<User> Users { get; set; }
 
+    public DbSet<Token> Tokens { get; set; }
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        builder.ApplyConfiguration(new UserConfiguration());
+        builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         base.OnModelCreating(builder);
     }
 }

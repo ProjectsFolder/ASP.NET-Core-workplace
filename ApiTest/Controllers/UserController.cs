@@ -1,8 +1,8 @@
 ﻿using Api.Requests.User;
 using Api.Responses.Meta;
 using Api.Responses.User;
-using Application.Users.Commands.CreateUser;
-using Application.Users.Queries.GetUsers;
+using Application.Domains.Users.Commands.CreateUser;
+using Application.Domains.Users.Queries.GetUsers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;

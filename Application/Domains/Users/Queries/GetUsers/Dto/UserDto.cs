@@ -1,7 +1,7 @@
 ﻿using Application.Common.Mappings;
 using Domain;
 
-namespace Application.Users.Queries.GetUsers.Dto;
+namespace Application.Domains.Users.Queries.GetUsers.Dto;
 
 public class UserDto : BaseMappingFrom<User>
 {

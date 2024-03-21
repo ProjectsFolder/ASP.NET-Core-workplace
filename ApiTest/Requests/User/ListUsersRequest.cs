@@ -1,5 +1,5 @@
 ﻿using Application.Common.Mappings;
-using Application.Users.Queries.GetUsers;
+using Application.Domains.Users.Queries.GetUsers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Requests.User;

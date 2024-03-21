@@ -1,12 +1,12 @@
-﻿using Application.Interfaces;
+﻿using Application.Common.Dto;
+using Application.Domains.Users.Queries.GetUsers.Dto;
+using Application.Interfaces;
 using Application.Specifications;
-using Application.Users.Queries.Common.Dto;
-using Application.Users.Queries.GetUsers.Dto;
 using AutoMapper;
 using Domain;
 using MediatR;
 
-namespace Application.Users.Queries.GetUsers;
+namespace Application.Domains.Users.Queries.GetUsers;
 
 public class GetUsersPaginatedQueryHandler(
     IRepository<User> repository,
