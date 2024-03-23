@@ -1,11 +1,12 @@
 ﻿using Application.Common.Attributes;
+using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
-namespace Api.Build;
+namespace Application.Extensions;
 
-public static class Autowiring
+public static class ServiceExtensions
 {
-    public static void EnableAutowiring(this WebApplicationBuilder builder, Assembly assembly)
+    public static void EnableAutowiring(this IServiceCollection services, Assembly assembly)
     {
         var dependencyTypes = assembly.GetTypes()
             .Where(type => type.GetCustomAttributes()
@@ -25,33 +26,33 @@ public static class Autowiring
             {
                 if (attr.BaseType != null)
                 {
-                    builder.Services.AddTransient(attr.BaseType, dependencyType);
+                    services.AddTransient(attr.BaseType, dependencyType);
                 }
                 else
                 {
-                    builder.Services.AddTransient(dependencyType);
+                    services.AddTransient(dependencyType);
                 }
             }
             else if (attr.Type == ServiceType.Scoped)
             {
                 if (attr.BaseType != null)
                 {
-                    builder.Services.AddScoped(attr.BaseType, dependencyType);
+                    services.AddScoped(attr.BaseType, dependencyType);
                 }
                 else
                 {
-                    builder.Services.AddScoped(dependencyType);
+                    services.AddScoped(dependencyType);
                 }
             }
             else
             {
                 if (attr.BaseType != null)
                 {
-                    builder.Services.AddSingleton(attr.BaseType, dependencyType);
+                    services.AddSingleton(attr.BaseType, dependencyType);
                 }
                 else
                 {
-                    builder.Services.AddSingleton(dependencyType);
+                    services.AddSingleton(dependencyType);
                 }
             }
         }
