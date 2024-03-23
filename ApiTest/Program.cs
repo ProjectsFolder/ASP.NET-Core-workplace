@@ -2,6 +2,8 @@ using Api.Build;
 using Application;
 using Application.Common.Mappings;
 using Application.Interfaces;
+using Cron;
+using Cron.Interfaces;
 using Infrastructure;
 using Infrastructure.Data;
 using System.Reflection;
@@ -11,6 +13,7 @@ var config = builder.Configuration;
 
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(config.GetConnectionString("DbConnection") ?? "");
+builder.Services.AddCronJobs();
 builder.Services.AddControllers();
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 builder.Services.AddHttpContextAccessor();

@@ -7,8 +7,7 @@ namespace Application.Domains.Users.Commands.CreateUser;
 internal class CreateUserCommandHandler(
     IRepository<User> repository,
     ITransaction transaction,
-    IPasswordHasher passwordHasher)
-    : IRequestHandler<CreateUserCommand, int>
+    IPasswordHasher passwordHasher) : IRequestHandler<CreateUserCommand, int>
 {
 
     public async Task<int> Handle(CreateUserCommand request, CancellationToken cancellationToken)

@@ -12,8 +12,7 @@ public class LoginCommandHandler(
     ITransaction transaction,
     IPasswordHasher passwordHasher,
     IRepository<User> userRepository,
-    IRepository<Token> tokenRepository)
-    : IRequestHandler<LoginCommand, string>
+    IRepository<Token> tokenRepository) : IRequestHandler<LoginCommand, string>
 {
     public async Task<string> Handle(LoginCommand request, CancellationToken cancellationToken)
     {

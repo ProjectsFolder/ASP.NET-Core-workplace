@@ -10,8 +10,7 @@ namespace Application.Domains.Users.Queries.GetUsers;
 
 public class GetUsersPaginatedQueryHandler(
     IRepository<User> repository,
-    IMapper mapper)
-    : IRequestHandler<GetUsersPaginatedQuery, PaginationDto<UserDto>>
+    IMapper mapper) : IRequestHandler<GetUsersPaginatedQuery, PaginationDto<UserDto>>
 {
     public async Task<PaginationDto<UserDto>> Handle(GetUsersPaginatedQuery request, CancellationToken cancellationToken)
     {

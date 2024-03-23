@@ -8,8 +8,7 @@ namespace Application.Domains.Auth.Commands.Logout;
 
 public class LogoutCommandHandler(
     AuthService authService,
-    IRepository<Token> tokenRepository)
-    : IRequestHandler<LogoutCommand>
+    IRepository<Token> tokenRepository) : IRequestHandler<LogoutCommand>
 {
     public async Task Handle(LogoutCommand request, CancellationToken cancellationToken)
     {

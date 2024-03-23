@@ -2,14 +2,13 @@
 using Application.Domains.Auth.Commands.Login;
 using System.ComponentModel.DataAnnotations;
 
-namespace Api.Requests.Auth
-{
-    public class AuthRequest : BaseMappingTo<LoginCommand>
-    {
-        [Required]
-        public required string Login { get; set; }
+namespace Api.Requests.Auth;
 
-        [Required]
-        public required string Password { get; set; }
-    }
+public class AuthRequest : BaseMappingTo<LoginCommand>
+{
+    [Required]
+    public required string Login { get; set; }
+
+    [Required]
+    public required string Password { get; set; }
 }
