@@ -1,4 +1,5 @@
-﻿using Infrastructure.Data;
+﻿using Application.Interfaces;
+using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -14,7 +15,26 @@ public static class Configure
         {
             using var scope = services.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
-            context.Database.Migrate();
+            if (!context.Database.IsInMemory())
+            {
+                context.Database.Migrate();
+            }
+        }
+    }
+
+    public static async void DatabaseSeed(this IServiceProvider services)
+    {
+        using var scope = services.CreateScope();
+        var scopedProvider = scope.ServiceProvider;
+        try
+        {
+            var context = scopedProvider.GetRequiredService<DatabaseContext>();
+            var passwordHasher = scopedProvider.GetRequiredService<IPasswordHasher>();
+            await DatabaseContextSeed.SeedAsync(context, passwordHasher);
+        }
+        catch
+        {
+            Console.WriteLine("An error occurred seeding the DB.");
         }
     }
 }

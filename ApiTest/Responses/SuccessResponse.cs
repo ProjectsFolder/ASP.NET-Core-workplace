@@ -2,7 +2,7 @@
 
 namespace Api.Responses;
 
-internal class SuccessResponse<T>
+public class SuccessResponse<T>
 {
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
     public T? Item { get; set; } = default;

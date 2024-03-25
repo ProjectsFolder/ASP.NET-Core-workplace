@@ -7,9 +7,19 @@ namespace Infrastructure;
 
 public static class Dependency
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services, string connectionString)
+    public static IServiceCollection AddInfrastructure(
+        this IServiceCollection services,
+        string connectionString,
+        bool inMemory)
     {
-        services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(connectionString));
+        if (inMemory)
+        {
+            services.AddDbContext<DatabaseContext>(options => options.UseInMemoryDatabase("Database"));
+        } 
+        else
+        {
+            services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(connectionString));
+        }
         services.AddScoped<ITransaction, TransactionHandler>();
 
         return services;
