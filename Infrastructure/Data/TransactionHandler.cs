@@ -7,11 +7,6 @@ public class TransactionHandler(DatabaseContext context) : ITransaction
 {
     public async Task<T> ExecuteAsync<T>(Func<Task<T>> func, CancellationToken? cancellationToken = null)
     {
-        if (context.Database.IsInMemory())
-        {
-            return await func();
-        }
-
         var strategy = context.Database.CreateExecutionStrategy();
         
         return await strategy.ExecuteAsync(async () =>

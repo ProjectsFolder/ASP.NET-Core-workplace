@@ -1,12 +1,15 @@
 ﻿using Api.Requests.User;
 using Api.Responses.Meta;
 using Api.Responses.User;
+using Api.Security.Authentication.UserToken;
 using Application.Domains.Users.Commands.CreateUser;
 using Application.Domains.Users.Queries.GetUsers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
 
+[Authorize(AuthenticationSchemes = UserTokenDefaults.SchemaName)]
 public class UserController : BaseController
 {
     [HttpGet]

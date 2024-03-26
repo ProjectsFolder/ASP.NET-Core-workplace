@@ -15,9 +15,7 @@ var config = builder.Configuration;
 builder.Services.AddApplication();
 builder.Services.EnableAutowiring(Assembly.GetExecutingAssembly());
 builder.Services.EnableAutowiring(typeof(IRepository<>).Assembly);
-builder.Services.AddInfrastructure(
-    config.GetConnectionString("DbConnection") ?? "",
-    config.GetValue("UseInMemoryDatabase", false));
+builder.Services.AddInfrastructure(config.GetConnectionString("DbConnection") ?? "");
 builder.Services.AddCronJobs();
 builder.Services.AddControllers();
 builder.Services.AddRouting(options => options.LowercaseUrls = true);

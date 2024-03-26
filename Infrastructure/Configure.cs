@@ -15,10 +15,7 @@ public static class Configure
         {
             using var scope = services.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
-            if (!context.Database.IsInMemory())
-            {
-                context.Database.Migrate();
-            }
+            context.Database.Migrate();
         }
     }
 
