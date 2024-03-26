@@ -1,8 +1,6 @@
 ﻿using Api.Extensions;
 using Api.Requests.Auth;
 using Api.Responses;
-using Infrastructure.Data;
-using Microsoft.Extensions.DependencyInjection;
 using System.Net;
 using System.Text;
 using System.Text.Json;
@@ -18,8 +16,6 @@ public class LoginTest : BaseTest
     [DataRow("user", "badpassword", HttpStatusCode.NotFound)]
     public async Task Login(string testUsername, string testPassword, HttpStatusCode statusCode)
     {
-        var context = ServiceProvider.GetRequiredService<DatabaseContext>();
-
         var request = new AuthRequest()
         {
             Login = testUsername,
