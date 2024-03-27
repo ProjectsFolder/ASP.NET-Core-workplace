@@ -15,7 +15,7 @@ public class DeleteExpiredTokensJob(IMediator mediator, IConfiguration configura
             lifetime = seconds;
         }
 
-        var command = new DeleteExpiredTokensCommand { Seconds = lifetime };
+        var command = new DeleteExpiredTokensCommand { TokenLifetimeSeconds = lifetime };
         await mediator.Send(command, token);
     }
 }

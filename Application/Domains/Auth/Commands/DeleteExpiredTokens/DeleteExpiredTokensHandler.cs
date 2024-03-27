@@ -10,7 +10,7 @@ public class DeleteExpiredTokensHandler(
 {
     public async Task Handle(DeleteExpiredTokensCommand request, CancellationToken cancellationToken)
     {
-        var expiredTokens = new GetExpiredTokensSpecification(request.Seconds);
+        var expiredTokens = new GetExpiredTokensSpecification(request.TokenLifetimeSeconds);
         var tokens = await tokenRepository.ListAsync(expiredTokens, cancellationToken);
         await tokenRepository.DeleteRangeAsync(tokens, cancellationToken);
     }
