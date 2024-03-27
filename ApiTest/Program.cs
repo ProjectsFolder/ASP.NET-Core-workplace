@@ -19,6 +19,13 @@ builder.Services.EnableAutowiring(typeof(IRepository<>).Assembly);
 builder.Services.AddInfrastructure(config.GetConnectionString("DbConnection") ?? "");
 builder.Services.AddCronJobs();
 builder.Services.AddControllers();
+builder.Services.AddApiVersioning()
+    .AddApiExplorer(options =>
+    {
+        options.SubstituteApiVersionInUrl = true;
+        options.GroupNameFormat = "'v'VVV";
+        options.AssumeDefaultVersionWhenUnspecified = true;
+    });
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddAutoMapper(config =>
@@ -44,7 +51,16 @@ if (!app.Environment.IsDevelopment())
 else
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options =>
+    {
+        var descriptions = app.DescribeApiVersions();
+        foreach (var description in descriptions)
+        {
+            var url = $"/swagger/{description.GroupName}/swagger.json";
+            var name = description.GroupName;
+            options.SwaggerEndpoint(url, name);
+        }
+    });
 }
 
 app.Run();

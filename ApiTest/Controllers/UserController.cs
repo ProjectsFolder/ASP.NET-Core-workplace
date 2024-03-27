@@ -5,11 +5,13 @@ using Api.Responses.User;
 using Api.Security.Authentication.UserToken;
 using Application.Domains.Users.Commands.CreateUser;
 using Application.Domains.Users.Queries.GetUsers;
+using Asp.Versioning;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
 
+[ApiVersion(1.0)]
 [Authorize(AuthenticationSchemes = UserTokenDefaults.SchemaName)]
 public class UserController : BaseController
 {

@@ -1,5 +1,7 @@
 ﻿using Api.Build.Documentation.Filters;
+using Api.Build.Documentation.Options;
 using Api.Security.Authentication.UserToken;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -11,10 +13,10 @@ public static class Documentation
     {
         var config = builder.Configuration;
 
+        builder.AddSwaggerOptions();
         builder.Services.AddSwaggerGen(options =>
         {
             options.AddFilters();
-            options.SwaggerDoc("v1", new OpenApiInfo { Title = "Api", Version = "v1" });
             options.EnableAnnotations();
             options.AddSecurityDefinition(UserTokenDefaults.SchemaName, new OpenApiSecurityScheme
             {
@@ -30,5 +32,10 @@ public static class Documentation
     {
         options.OperationFilter<MediaTypeFilter>();
         options.OperationFilter<AuthenticationFilter>();
+    }
+
+    private static void AddSwaggerOptions(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, SwaggerDocsOptions>();
     }
 }
