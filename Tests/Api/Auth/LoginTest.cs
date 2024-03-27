@@ -22,7 +22,7 @@ public class LoginTest : BaseTest
             Password = testPassword
         };
         var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
-        var response = await NewClient.PostAsync("api/auth/login", jsonContent);
+        var response = await NewClient.PostAsync("api/v1/auth/login", jsonContent);
 
         Assert.AreEqual(statusCode, response.StatusCode);
 
