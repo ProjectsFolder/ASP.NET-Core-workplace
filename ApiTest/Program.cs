@@ -1,4 +1,5 @@
-using Api.Build;
+using Api.Build.Authentication;
+using Api.Build.Documentation;
 using Api.Middleware;
 using Application;
 using Application.Common.Mappings;
@@ -29,6 +30,7 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
 builder.Services.AddScoped(typeof(IReadRepository<>), typeof(EfRepository<>));
 
 builder.AddAuthentication();
+builder.AddDocumentation();
 
 var app = builder.Build();
 app.Services.DatabaseMigrate();
@@ -38,6 +40,11 @@ app.MapControllers();
 if (!app.Environment.IsDevelopment())
 {
     app.UseMiddleware<ExceptionMiddleware>();
+}
+else
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.Run();

@@ -1,6 +1,7 @@
-﻿using Api.Security.Authentication.UserToken;
+﻿using Api.Build.Authentication;
+using Api.Security.Authentication.UserToken;
 
-namespace Api.Build;
+namespace Api.Build.Authentication;
 
 public static class Authentication
 {
@@ -12,7 +13,8 @@ public static class Authentication
             options.HeaderName = config.GetValue<string>("UserTokenHeaderName") ?? "Authorization";
         });
 
-        builder.Services.AddTransient(services => {
+        builder.Services.AddTransient(services =>
+        {
             var service = services.GetService<IHttpContextAccessor>()?.HttpContext?.User;
 
             return service ?? throw new Exception("Service not found");

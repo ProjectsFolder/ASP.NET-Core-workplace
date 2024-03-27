@@ -11,10 +11,14 @@ public static class Dependency
     public static IServiceCollection AddCronJobs(this IServiceCollection services)
     {
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
-
-        services.AddCronJob<DeleteExpiredTokensJob>("* * * * *");
+        services.RegisterJobs();
 
         return services;
+    }
+
+    private static void RegisterJobs(this IServiceCollection services)
+    {
+        services.AddCronJob<DeleteExpiredTokensJob>("* * * * *");
     }
 
     private static void AddCronJob<T>(this IServiceCollection services, string cronExpression)

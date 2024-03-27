@@ -1,4 +1,5 @@
 ﻿using Api.Requests.Auth;
+using Api.Responses.Documentation;
 using Api.Security.Authentication.UserToken;
 using Application.Domains.Auth.Commands.Login;
 using Application.Domains.Auth.Commands.Logout;
@@ -10,6 +11,7 @@ namespace Api.Controllers;
 public class AuthController : BaseController
 {
     [HttpPost("login")]
+    [ProducesResponseType<SuccessItem<string>>(200)]
     public async Task<ActionResult> Login([FromBody] AuthRequest request)
     {
         var command = Mapper.Map<LoginCommand>(request);
