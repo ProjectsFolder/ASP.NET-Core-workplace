@@ -49,3 +49,15 @@ services:
       - db
     networks:
       - backend
+
+  rabbitmq:
+    image: rabbitmq:3.13.0-management
+    container_name: apitest_rabbitmq
+    restart: always
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: password
+    ports:
+      - 17002:15672
+    networks:
+      - backend

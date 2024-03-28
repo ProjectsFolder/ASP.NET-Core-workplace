@@ -6,6 +6,7 @@ using Application.Common.Mappings;
 using Application.Extensions;
 using Application.Interfaces;
 using Cron;
+using EventBus;
 using Infrastructure;
 using Infrastructure.Data;
 using System.Reflection;
@@ -16,7 +17,9 @@ var config = builder.Configuration;
 builder.Services.AddApplication();
 builder.Services.EnableAutowiring(Assembly.GetExecutingAssembly());
 builder.Services.EnableAutowiring(typeof(IRepository<>).Assembly);
-builder.Services.AddInfrastructure(config.GetConnectionString("DbConnection") ?? "");
+builder.Services.AddIntegrationEvents();
+builder.Services.AddDatabase(config.GetConnectionString("DbConnection") ?? "");
+builder.Services.AddRabbitMq();
 builder.Services.AddCronJobs();
 builder.Services.AddControllers();
 builder.Services.AddApiVersioning()

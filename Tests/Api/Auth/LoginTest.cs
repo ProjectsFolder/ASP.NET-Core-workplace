@@ -1,4 +1,4 @@
-﻿using Api.Extensions;
+﻿using Application.Extensions;
 using Api.Requests.Auth;
 using Api.Responses;
 using System.Net;

@@ -23,6 +23,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Application\Application.csproj" />
     <ProjectReference Include="..\Cron\Cron.csproj" />
+    <ProjectReference Include="..\EventBus\EventBus.csproj" />
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 
