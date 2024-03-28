@@ -1,6 +1,6 @@
 ﻿namespace EventBus;
 
-public class Subcriptions
+public class Subscriptions
 {
     public Dictionary<string, Type> EventTypes { get; } = [];
 }

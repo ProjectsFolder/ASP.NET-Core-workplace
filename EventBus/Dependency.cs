@@ -20,7 +20,7 @@ public static class Dependency
         where THandler : class, IIntegrationEventHandler<TEvent>
     {
         services.AddKeyedTransient<IIntegrationEventHandler, THandler>(typeof(TEvent));
-        services.Configure<Subcriptions>(o =>
+        services.Configure<Subscriptions>(o =>
         {
             o.EventTypes[typeof(TEvent).Name] = typeof(TEvent);
         });

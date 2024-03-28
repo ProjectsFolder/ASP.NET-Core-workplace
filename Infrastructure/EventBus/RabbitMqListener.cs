@@ -14,7 +14,7 @@ namespace Infrastructure.EventBus;
 
 public class RabbitMqListener(
     IServiceProvider serviceProvider,
-    IOptions<Subcriptions> subscriptions,
+    IOptions<Subscriptions> subscriptions,
     IConfiguration configuration) : BackgroundService
 {
     private const string ExchangeName = "apitest_event_bus";
@@ -23,7 +23,7 @@ public class RabbitMqListener(
     private IConnection connection = null!;
     private IModel channel = null!;
     private AsyncEventingBasicConsumer consumer = null!;
-    private readonly Subcriptions subscriptions = subscriptions.Value;
+    private readonly Subscriptions subscriptions = subscriptions.Value;
 
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {
