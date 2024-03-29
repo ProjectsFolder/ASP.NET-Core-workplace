@@ -1,4 +1,5 @@
 ﻿using EventBus.Events.DeleteExpiredTokens;
+using EventBus.Events.MassCreateUsers;
 using EventBus.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics.CodeAnalysis;
@@ -7,11 +8,10 @@ namespace EventBus;
 
 public static class Dependency
 {
-    public static IServiceCollection AddIntegrationEvents(this IServiceCollection services)
+    public static void AddIntegrationEvents(this IServiceCollection services)
     {
         services.AddSubscription<DeleteExpiredTokensEvent, DeleteExpiredTokensHandler>();
-
-        return services;
+        services.AddSubscription<MassCreateUsersEvent, MassCreateUsersHandler>();
     }
 
     private static void AddSubscription<TEvent, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] THandler>

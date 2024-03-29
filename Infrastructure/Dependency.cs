@@ -2,7 +2,9 @@
 using Infrastructure.Data;
 using Infrastructure.EventBus;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using RabbitMQ.Client;
 
 namespace Infrastructure;
 
@@ -18,8 +20,17 @@ public static class Dependency
         return services;
     }
 
-    public static IServiceCollection AddRabbitMq(this IServiceCollection services)
+    public static IServiceCollection AddRabbitMq(this IServiceCollection services, IConfiguration configuration)
     {
+        var factory = new ConnectionFactory
+        {
+            HostName = configuration["Mq:Host"],
+            UserName = configuration["Mq:Login"],
+            Password = configuration["Mq:Password"],
+            DispatchConsumersAsync = true,
+        };
+        var connection = factory.CreateConnection();
+        services.AddSingleton(connection);
         services.AddHostedService<RabbitMqListener>();
 
         return services;

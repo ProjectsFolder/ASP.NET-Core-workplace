@@ -34,4 +34,31 @@ public class TransactionHandler(DatabaseContext context) : ITransaction
             return result;
         });
     }
+
+    public async Task ExecuteAsync(Func<Task> action, CancellationToken? cancellationToken = null)
+    {
+        var strategy = context.Database.CreateExecutionStrategy();
+
+        await strategy.ExecuteAsync(async () =>
+        {
+            if (context.Database.CurrentTransaction == null)
+            {
+                using var transaction = await context.Database.BeginTransactionAsync(
+                    cancellationToken ?? CancellationToken.None);
+                try
+                {
+                    await action();
+                    await transaction.CommitAsync(cancellationToken ?? CancellationToken.None);
+                }
+                catch
+                {
+                    throw;
+                }
+            }
+            else
+            {
+                await action();
+            }
+        });
+    }
 }

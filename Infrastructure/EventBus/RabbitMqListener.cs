@@ -4,7 +4,6 @@ using RabbitMQ.Client;
 using System.Text;
 using Microsoft.Extensions.Options;
 using EventBus;
-using Microsoft.Extensions.Configuration;
 using EventBus.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using EventBus.Events;
@@ -14,8 +13,7 @@ namespace Infrastructure.EventBus;
 
 public class RabbitMqListener(
     IServiceProvider serviceProvider,
-    IOptions<Subscriptions> subscriptions,
-    IConfiguration configuration) : BackgroundService
+    IOptions<Subscriptions> subscriptions) : BackgroundService
 {
     private const string ExchangeName = "apitest_event_bus";
     private const string QueueName = "apitest_event_queue";
@@ -29,16 +27,11 @@ public class RabbitMqListener(
     {
         _ = Task.Factory.StartNew(() =>
         {
-            var factory = new ConnectionFactory
-            {
-                HostName = configuration["Mq:Host"],
-                UserName = configuration["Mq:Login"],
-                Password = configuration["Mq:Password"],
-                DispatchConsumersAsync = true,
-            };
-            connection = factory.CreateConnection();
+            connection = serviceProvider.GetRequiredService<IConnection>();
             channel = connection.CreateModel();
-            channel.ExchangeDeclare(exchange: ExchangeName, type: "direct");
+            channel.ExchangeDeclare(
+                exchange: ExchangeName,
+                type: "direct");
             channel.QueueDeclare(
                 queue: QueueName,
                 durable: true,
@@ -68,36 +61,48 @@ public class RabbitMqListener(
 
     private async Task OnMessageReceived(object? sender, BasicDeliverEventArgs eventArgs)
     {
-        if (!subscriptions.EventTypes.TryGetValue(eventArgs.RoutingKey, out var eventType))
+        var success = false;
+        try
         {
-            return;
-        }
+            if (!subscriptions.EventTypes.TryGetValue(eventArgs.RoutingKey, out var eventType))
+            {
+                return;
+            }
 
-        var message = Encoding.UTF8.GetString(eventArgs.Body.Span);
-        if (!message.TryParseJson(eventType, out object? @event))
+            var message = Encoding.UTF8.GetString(eventArgs.Body.Span);
+            if (!message.TryParseJson(eventType, out object? @event))
+            {
+                return;
+            }
+
+            var integrationEvent = @event as IntegrationEvent;
+            if (integrationEvent == null)
+            {
+                return;
+            }
+
+            using var scope = serviceProvider.CreateAsyncScope();
+            foreach (var handler in scope.ServiceProvider.GetKeyedServices<IIntegrationEventHandler>(eventType))
+            {
+                await handler.Handle(integrationEvent);
+            }
+            success = true;
+        }
+        finally
         {
-            return;
+            if (success)
+            {
+                channel.BasicAck(eventArgs.DeliveryTag, multiple: false);
+            }
+            else
+            {
+                channel.BasicNack(eventArgs.DeliveryTag, multiple: false, requeue: false);
+            }
         }
-
-        var integrationEvent = @event as IntegrationEvent;
-        if (integrationEvent == null)
-        {
-            return;
-        }
-
-        using var scope = serviceProvider.CreateAsyncScope();
-        foreach (var handler in scope.ServiceProvider.GetKeyedServices<IIntegrationEventHandler>(eventType))
-        {
-            await handler.Handle(integrationEvent);
-        }
-
-        channel.BasicAck(eventArgs.DeliveryTag, multiple: false);
     }
 
     public override void Dispose()
     {
         channel?.Dispose();
-        connection?.Dispose();
-        base.Dispose();
     }
 }

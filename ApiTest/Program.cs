@@ -19,7 +19,7 @@ builder.Services.EnableAutowiring(Assembly.GetExecutingAssembly());
 builder.Services.EnableAutowiring(typeof(IRepository<>).Assembly);
 builder.Services.AddIntegrationEvents();
 builder.Services.AddDatabase(config.GetConnectionString("DbConnection") ?? "");
-builder.Services.AddRabbitMq();
+builder.Services.AddRabbitMq(config);
 builder.Services.AddCronJobs();
 builder.Services.AddControllers();
 builder.Services.AddApiVersioning()
