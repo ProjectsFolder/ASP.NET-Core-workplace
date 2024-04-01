@@ -59,5 +59,6 @@ services:
       RABBITMQ_DEFAULT_PASS: password
     ports:
       - 17002:15672
+      - 17003:5672
     networks:
       - backend

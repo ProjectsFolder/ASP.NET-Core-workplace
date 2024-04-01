@@ -5,26 +5,18 @@ namespace Infrastructure.Data;
 
 public class TransactionHandler(DatabaseContext context) : ITransaction
 {
-    public async Task<T> ExecuteAsync<T>(Func<Task<T>> func, CancellationToken? cancellationToken = null)
+    public Task<T> ExecuteAsync<T>(Func<Task<T>> func, CancellationToken? cancellationToken = null)
     {
         var strategy = context.Database.CreateExecutionStrategy();
-        
-        return await strategy.ExecuteAsync(async () =>
+
+        return strategy.ExecuteAsync(async (token) =>
         {
-            T? result;
+            T result;
             if (context.Database.CurrentTransaction == null)
             {
-                using var transaction = await context.Database.BeginTransactionAsync(
-                    cancellationToken ?? CancellationToken.None);
-                try
-                {
-                    result = await func();
-                    await transaction.CommitAsync(cancellationToken ?? CancellationToken.None);
-                }
-                catch
-                {
-                    throw;
-                }
+                using var transaction = await context.Database.BeginTransactionAsync(token);
+                result = await func();
+                await transaction.CommitAsync(token);
             }
             else
             {
@@ -32,33 +24,25 @@ public class TransactionHandler(DatabaseContext context) : ITransaction
             }
 
             return result;
-        });
+        }, cancellationToken ?? CancellationToken.None);
     }
 
-    public async Task ExecuteAsync(Func<Task> action, CancellationToken? cancellationToken = null)
+    public Task ExecuteAsync(Func<Task> action, CancellationToken? cancellationToken = null)
     {
         var strategy = context.Database.CreateExecutionStrategy();
 
-        await strategy.ExecuteAsync(async () =>
+        return strategy.ExecuteAsync(async (token) =>
         {
             if (context.Database.CurrentTransaction == null)
             {
-                using var transaction = await context.Database.BeginTransactionAsync(
-                    cancellationToken ?? CancellationToken.None);
-                try
-                {
-                    await action();
-                    await transaction.CommitAsync(cancellationToken ?? CancellationToken.None);
-                }
-                catch
-                {
-                    throw;
-                }
+                using var transaction = await context.Database.BeginTransactionAsync(token);
+                await action();
+                await transaction.CommitAsync(token);
             }
             else
             {
                 await action();
             }
-        });
+        }, cancellationToken ?? CancellationToken.None);
     }
 }

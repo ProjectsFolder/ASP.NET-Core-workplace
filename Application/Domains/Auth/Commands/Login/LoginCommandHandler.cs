@@ -11,9 +11,12 @@ namespace Application.Domains.Auth.Commands.Login;
 public class LoginCommandHandler(
     ITransaction transaction,
     IPasswordHasher passwordHasher,
+    IRabbitMq rabbitMq,
     IRepository<User> userRepository,
     IRepository<Token> tokenRepository) : IRequestHandler<LoginCommand, string>
 {
+    private const string ExchangeName = "apitest_event_bus_login_user";
+
     public async Task<string> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
         return await transaction.ExecuteAsync(() => Process(request, cancellationToken), cancellationToken);
@@ -42,6 +45,8 @@ public class LoginCommandHandler(
         };
 
         await tokenRepository.AddAsync(token, cancellationToken);
+
+        _ = rabbitMq.SendMessageAsync(ExchangeName, "", new { user.Login, Time = DateTime.UtcNow });
 
         return token.Value;
     }

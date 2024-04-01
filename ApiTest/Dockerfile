@@ -8,15 +8,15 @@ EXPOSE 8080
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Debug
 WORKDIR /src
-COPY ["ApiTest/ApiTest.csproj", "ApiTest/"]
-RUN dotnet restore "./WebTest/./ApiTest.csproj"
+COPY ["ApiTest/Api.csproj", "ApiTest/"]
+RUN dotnet restore "./ApiTest/./Api.csproj"
 COPY . .
 WORKDIR "/src/ApiTest"
-RUN dotnet build "./ApiTest.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "./Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Debug
-RUN dotnet publish "./ApiTest.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 RUN apt update && \
