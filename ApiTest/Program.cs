@@ -7,8 +7,10 @@ using Application.Extensions;
 using Application.Interfaces;
 using Cron;
 using EventBus;
-using Infrastructure;
 using Infrastructure.Data;
+using Infrastructure.EventBus;
+using Infrastructure.Mail;
+using Infrastructure.Template;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +22,8 @@ builder.Services.EnableAutowiring(typeof(IRepository<>).Assembly);
 builder.Services.AddIntegrationEvents();
 builder.Services.AddDatabase(config.GetConnectionString("DbConnection") ?? "");
 builder.Services.AddRabbitMq(config);
+builder.Services.AddMail(config);
+builder.Services.AddTemplateProcessor();
 builder.Services.AddCronJobs();
 builder.Services.AddControllers();
 builder.Services.AddApiVersioning()

@@ -7,14 +7,14 @@ namespace Infrastructure.EventBus;
 
 public class RabbitMq(IConnection connection) : IRabbitMq
 {
-    public Task SendMessageAsync(string exchange, string routingKey, object message)
+    public Task SendAsync(string exchange, string routingKey, object message)
     {
         var serialized = JsonSerializer.Serialize(message);
 
-        return SendMessageAsync(exchange, routingKey, serialized);
+        return SendAsync(exchange, routingKey, serialized);
     }
 
-    public Task SendMessageAsync(string exchange, string routingKey, string message)
+    public Task SendAsync(string exchange, string routingKey, string message)
     {
         return Task.Run(() =>
         {

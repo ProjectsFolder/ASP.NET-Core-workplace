@@ -1,9 +1,8 @@
 ﻿using Application.Interfaces;
-using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Infrastructure;
+namespace Infrastructure.Data;
 
 public static class Configure
 {

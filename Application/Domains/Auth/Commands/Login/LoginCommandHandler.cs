@@ -1,17 +1,23 @@
 ﻿using Application.Common.Exceptions;
 using Application.Interfaces;
+using Application.Services.Mail;
+using Application.Services.Mail.Dto;
+using Application.Services.Mail.Dto.Template;
 using Application.Specifications.Token;
 using Application.Specifications.User;
 using Application.Utils;
+using AutoMapper;
 using Domain;
 using MediatR;
 
 namespace Application.Domains.Auth.Commands.Login;
 
 public class LoginCommandHandler(
+    MailService mailer,
     ITransaction transaction,
     IPasswordHasher passwordHasher,
     IRabbitMq rabbitMq,
+    IMapper mapper,
     IRepository<User> userRepository,
     IRepository<Token> tokenRepository) : IRequestHandler<LoginCommand, string>
 {
@@ -46,7 +52,21 @@ public class LoginCommandHandler(
 
         await tokenRepository.AddAsync(token, cancellationToken);
 
-        _ = rabbitMq.SendMessageAsync(ExchangeName, "", new { user.Login, Time = DateTime.UtcNow });
+        var users = await userRepository.ListAsync(cancellationToken);
+
+        _ = rabbitMq.SendAsync(ExchangeName, "", new { user.Login, Time = DateTime.UtcNow });
+
+        var message = new MailTemplateDto
+        {
+            Subject = "Login notification",
+            Template = "User with login \"{{ user.Login }}\" logged.<br />All users:<br />{% for user in users %}{{ user.Login }}<br />{% endfor %}",
+            TemplateParameters = new {
+                user = mapper.Map<UserTemplateDto>(user),
+                users = users.Select(mapper.Map<UserTemplateDto>).ToList(),
+            },
+            ReceiverAddress = "admin@mail.com",
+        };
+        _ = mailer.SendAsync(message, cancellationToken);
 
         return token.Value;
     }

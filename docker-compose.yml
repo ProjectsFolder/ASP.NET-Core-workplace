@@ -62,3 +62,13 @@ services:
       - 17003:5672
     networks:
       - backend
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: apitest_mailhog
+    restart: always
+    ports:
+      - "17004:8025"
+      - "17005:1025"
+    networks:
+      - backend
