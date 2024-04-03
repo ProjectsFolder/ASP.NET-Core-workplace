@@ -11,7 +11,7 @@ public static class Dependency
     {
         services.AddSingleton(services =>
         {
-            var retries = 3;
+            var retries = 5;
             while (true)
             {
                 try
