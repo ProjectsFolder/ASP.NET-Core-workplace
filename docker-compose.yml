@@ -61,6 +61,8 @@ services:
     ports:
       - 17002:15672
       - 17003:5672
+    volumes:
+      - ./docker/mount/rabbitmq:/var/lib/rabbitmq
     networks:
       - backend
 
