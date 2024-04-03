@@ -9,20 +9,22 @@ public static class Dependency
 {
     public static IServiceCollection AddRabbitMq(this IServiceCollection services, IConfiguration configuration)
     {
-        var factory = new ConnectionFactory
+        services.AddSingleton(services =>
         {
-            HostName = configuration["Mq:Host"],
-            UserName = configuration["Mq:Login"],
-            Password = configuration["Mq:Password"],
-            DispatchConsumersAsync = true,
-        };
-        if (int.TryParse(configuration["Mq:Port"], out int tcpPort))
-        {
-            factory.Port = tcpPort;
-        }
+            var factory = new ConnectionFactory
+            {
+                HostName = configuration["Mq:Host"],
+                UserName = configuration["Mq:Login"],
+                Password = configuration["Mq:Password"],
+                DispatchConsumersAsync = true,
+            };
+            if (int.TryParse(configuration["Mq:Port"], out int tcpPort))
+            {
+                factory.Port = tcpPort;
+            }
 
-        var connection = factory.CreateConnection();
-        services.AddSingleton(connection);
+            return factory.CreateConnection();
+        });
         services.AddHostedService<RabbitMqListener>();
         services.AddScoped<IRabbitMq, RabbitMq>();
 
