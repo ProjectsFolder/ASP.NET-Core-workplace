@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces;
+using Application.Utils;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RabbitMQ.Client;
@@ -11,34 +12,22 @@ public static class Dependency
     {
         services.AddSingleton(services =>
         {
-            var retries = 5;
-            while (true)
+            return Retry.Execute(() =>
             {
-                try
+                var factory = new ConnectionFactory
                 {
-                    var factory = new ConnectionFactory
-                    {
-                        HostName = configuration["Mq:Host"],
-                        UserName = configuration["Mq:Login"],
-                        Password = configuration["Mq:Password"],
-                        DispatchConsumersAsync = true,
-                    };
-                    if (int.TryParse(configuration["Mq:Port"], out int tcpPort))
-                    {
-                        factory.Port = tcpPort;
-                    }
+                    HostName = configuration["Mq:Host"],
+                    UserName = configuration["Mq:Login"],
+                    Password = configuration["Mq:Password"],
+                    DispatchConsumersAsync = true,
+                };
+                if (int.TryParse(configuration["Mq:Port"], out int tcpPort))
+                {
+                    factory.Port = tcpPort;
+                }
 
-                    return factory.CreateConnection();
-                }
-                catch
-                {
-                    if (--retries == 0)
-                    {
-                        throw;
-                    }
-                    Thread.Sleep(5000);
-                }
-            }
+                return factory.CreateConnection();
+            }, 6, 5000);
         });
         services.AddHostedService<RabbitMqListener>();
         services.AddScoped<IRabbitMq, RabbitMq>();
