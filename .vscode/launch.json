@@ -6,7 +6,7 @@
             "type": "coreclr",
             "request": "attach",
             "sourceFileMap": {
-                "/src/ApiTest": "${workspaceFolder}/ApiTest"
+                "/src": "${workspaceFolder}"
             },
             "processId" : "${command:pickRemoteProcess}",
             "pipeTransport": {
