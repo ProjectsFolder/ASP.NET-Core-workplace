@@ -1,7 +1,5 @@
-﻿using NCrontab;
-
-namespace Cron;
+﻿namespace Cron;
 
 public sealed record CronRegistryEntry(
     Type Type,
-    CrontabSchedule CrontabSchedule);
+    string CronExpression);

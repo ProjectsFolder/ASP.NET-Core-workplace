@@ -2,6 +2,7 @@
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections;
 
 namespace Api.Controllers;
 
@@ -21,25 +22,16 @@ public abstract class BaseController : ControllerBase
 
     protected ActionResult Success<T>(T response, object? meta = null)
     {
-        var result = new SuccessResponse<T>
-        {
-            Item = response,
-        };
+        var result = new SuccessResponse<T>();
 
-        if (meta != null)
+        if (response is IList)
         {
-            result.Meta = meta;
+            result.Items = response;
         }
-
-        return Ok(result);
-    }
-
-    protected ActionResult Success<T>(IEnumerable<T> response, object? meta = null)
-    {
-        var result = new SuccessResponse<T>
+        else
         {
-            Items = response,
-        };
+            result.Item = response;
+        }
 
         if (meta != null)
         {

@@ -6,6 +6,7 @@ namespace Cron;
 
 public sealed class CronScheduler(
     IServiceProvider serviceProvider,
+    ICronParser cronParser,
     IEnumerable<CronRegistryEntry> cronJobs) : BackgroundService
 {
     private readonly IServiceProvider serviceProvider = serviceProvider;
@@ -43,11 +44,10 @@ public sealed class CronScheduler(
 
     private Dictionary<DateTime, List<Type>> GetJobRuns()
     {
-        var utcNow = DateTime.UtcNow;
         var runMap = new Dictionary<DateTime, List<Type>>();
         foreach (var cron in cronJobs)
         {
-            var runDates = cron.CrontabSchedule.GetNextOccurrences(utcNow, utcNow.AddMinutes(1));
+            var runDates = cronParser.GetNextMinuteOccurrences(cron.CronExpression);
             if (runDates is not null)
             {
                 foreach (var runDate in runDates)

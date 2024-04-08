@@ -33,7 +33,7 @@ public abstract class BaseTest
         }
     }
 
-    protected async Task<HttpClient> CreateClient(User? user = null)
+    protected async Task<HttpClient> CreateClient(Domain.User? user = null)
     {
         var options = new WebApplicationFactoryClientOptions() { AllowAutoRedirect = false };
         var client = application.CreateClient(options);
@@ -54,7 +54,7 @@ public abstract class BaseTest
         return client;
     }
 
-    private async Task<string> AuthorizedAs(User user)
+    private async Task<string> AuthorizedAs(Domain.User user)
     {
         if (!await Database.Users.AnyAsync(u => u.Id == user.Id))
         {
