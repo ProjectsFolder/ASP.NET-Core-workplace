@@ -1,5 +1,6 @@
 using Api.Build.Authentication;
 using Api.Build.Documentation;
+using Api.GrpcControllers;
 using Api.Middleware;
 using Application;
 using Application.Common.Mappings;
@@ -44,6 +45,7 @@ builder.Services.AddAutoMapper(config =>
 });
 builder.Services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
 builder.Services.AddScoped(typeof(IReadRepository<>), typeof(EfRepository<>));
+builder.Services.AddGrpc();
 
 builder.AddAuthentication();
 builder.AddDocumentation();
@@ -52,6 +54,7 @@ var app = builder.Build();
 app.Services.DatabaseMigrate();
 app.Services.DatabaseSeed();
 app.MapControllers();
+app.MapGrpcService<UserController>();
 
 if (!app.Environment.IsDevelopment())
 {

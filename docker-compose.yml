@@ -17,6 +17,7 @@ services:
       - rabbitmq
     ports:
       - "17000:8080"
+      - "17006:8090"
     networks:
       - backend
 
