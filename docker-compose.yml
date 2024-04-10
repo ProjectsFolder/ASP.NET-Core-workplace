@@ -15,6 +15,7 @@ services:
     depends_on:
       - db
       - rabbitmq
+      - redis
     ports:
       - "17000:8080"
       - "17006:8090"
@@ -74,5 +75,20 @@ services:
     ports:
       - "17004:8025"
       - "17005:1025"
+    networks:
+      - backend
+
+  redis:
+    image: redis:7.2-alpine
+    container_name: apitest_redis
+    restart: always
+    ports:
+      - "17007:6739"
+    environment:
+      REDIS_PASSWORD: password
+      REDIS_PORT: 6379
+      REDIS_DATABASES: 16
+    volumes:
+      - ./docker/mount/redis/data:/data
     networks:
       - backend

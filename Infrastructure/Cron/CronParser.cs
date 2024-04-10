@@ -1,31 +1,46 @@
 ﻿using Cron.Interfaces;
+using Microsoft.Extensions.Caching.Memory;
 using NCrontab;
+using System.Collections.Concurrent;
 
 namespace Infrastructure.Cron;
 
 public sealed class CronParser : ICronParser
 {
-    private readonly Dictionary<string, CrontabSchedule> expressions = [];
+    private readonly MemoryCache cache = new(new MemoryCacheOptions());
 
-    private readonly object locker = new();
+    private readonly ConcurrentDictionary<string, Semaphore> locks = [];
 
     public IEnumerable<DateTime> GetNextMinuteOccurrences(string cronExpression)
     {
-        if (!expressions.TryGetValue(cronExpression, out var cron))
+        if (!cache.TryGetValue(cronExpression, out var cron))
         {
-            lock (locker)
+            var locker = locks.GetOrAdd(cronExpression, k => new Semaphore(1, 1));
+            locker.WaitOne();
+            try
             {
-                if (!expressions.TryGetValue(cronExpression, out cron))
+                if (!cache.TryGetValue(cronExpression, out cron))
                 {
                     cron = CrontabSchedule.TryParse(cronExpression)
                         ?? throw new ArgumentException("Invalid cron expression", nameof(cronExpression));
-                    expressions[cronExpression] = cron;
+                    var cacheOptions = new MemoryCacheEntryOptions()
+                        .SetSlidingExpiration(TimeSpan.FromSeconds(86400));
+                    cache.Set(cronExpression, cron, cacheOptions);
                 }
             }
+            finally
+            {
+                locker.Release();
+            }
         }
-        
-        var baseTime = DateTime.UtcNow;
 
-        return cron.GetNextOccurrences(baseTime, baseTime.AddMinutes(1));
+        if (cron is CrontabSchedule schedule)
+        {
+            var baseTime = DateTime.UtcNow;
+
+            return schedule.GetNextOccurrences(baseTime, baseTime.AddMinutes(1));
+        }
+
+        throw new Exception("CronParser exception");
     }
 }

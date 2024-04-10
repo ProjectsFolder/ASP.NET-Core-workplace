@@ -4,6 +4,7 @@ using Api.Responses.Meta;
 using Api.Responses.User;
 using Api.Security.Authentication.UserToken;
 using Application.Domains.Users.Commands.CreateUser;
+using Application.Domains.Users.Queries.GetUser;
 using Application.Domains.Users.Queries.GetUsers;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Authorization;
@@ -28,6 +29,16 @@ public class UserController : BaseController
         };
 
         return Success(response, meta);
+    }
+
+    [HttpGet("{id}")]
+    [ProducesResponseType<SuccessItem<UserResponse>>(200)]
+    public async Task<ActionResult> Get(int id)
+    {
+        var query = new GetUserByIdQuery { Id = id };
+        var result = await Mediator.Send(query);
+
+        return Success(result);
     }
 
     [HttpPost]

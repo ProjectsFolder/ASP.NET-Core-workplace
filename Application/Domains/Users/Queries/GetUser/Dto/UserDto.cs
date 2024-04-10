@@ -1,0 +1,13 @@
+﻿using Application.Common.Mappings;
+using Domain;
+
+namespace Application.Domains.Users.Queries.GetUser.Dto;
+
+public class UserDto : BaseMappingFrom<User>
+{
+    public required int Id { get; set; }
+
+    public required string Login { get; set; }
+
+    public string? Email { get; set; }
+}
