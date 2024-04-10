@@ -41,7 +41,8 @@ internal sealed class DistributedCache(IDistributedCache cache) : ICache
                 await cache.SetStringAsync(key, cacheString, new DistributedCacheEntryOptions
                 {
                     AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(expiredSeconds),
-                });
+                },
+                cancel);
             }
         }
         finally
