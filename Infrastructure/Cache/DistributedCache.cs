@@ -1,6 +1,5 @@
 ﻿using Application.Interfaces;
 using Microsoft.Extensions.Caching.Distributed;
-using System.Collections.Concurrent;
 using System.Text.Json;
 
 namespace Infrastructure.Cache;
@@ -9,7 +8,7 @@ internal sealed class DistributedCache(IDistributedCache cache) : ICache
 {
     private readonly IDistributedCache cache = cache;
 
-    private readonly ConcurrentDictionary<object, SemaphoreSlim> locks = [];
+    private readonly SemaphoreSlim locker = new(1, 1);
 
     public async Task<T?> GetOrSet<T>(
         string key,
@@ -19,17 +18,17 @@ internal sealed class DistributedCache(IDistributedCache cache) : ICache
         where T : class
     {
         T? result = null;
-        var cacheString = await cache.GetStringAsync(key, cancellationToken ?? CancellationToken.None);
+        var cancel = cancellationToken ?? CancellationToken.None;
+        var cacheString = await cache.GetStringAsync(key, cancel);
         if (cacheString != null)
         {
             return JsonSerializer.Deserialize<T>(cacheString);
         }
 
-        var locker = locks.GetOrAdd(key, k => new SemaphoreSlim(1, 1));
-        await locker.WaitAsync();
+        await locker.WaitAsync(cancel);
         try
         {
-            cacheString = await cache.GetStringAsync(key, cancellationToken ?? CancellationToken.None);
+            cacheString = await cache.GetStringAsync(key, cancel);
             if (cacheString != null)
             {
                 result = JsonSerializer.Deserialize<T>(cacheString);
