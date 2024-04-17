@@ -18,7 +18,7 @@ public static class Documentation
         {
             options.AddFilters();
             options.EnableAnnotations();
-            options.AddSecurityDefinition(UserTokenDefaults.SchemaName, new OpenApiSecurityScheme
+            options.AddSecurityDefinition(UserTokenDefaults.AuthenticationScheme, new OpenApiSecurityScheme
             {
                 In = ParameterLocation.Header,
                 Name = config.GetValue<string>("UserTokenHeaderName") ?? "Authorization",

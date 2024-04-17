@@ -2,5 +2,5 @@
 
 public class UserTokenDefaults
 {
-    public const string SchemaName = "UserToken";
+    public const string AuthenticationScheme = "UserToken";
 }

@@ -32,9 +32,9 @@ public class UserTokenHandler(
         {
             new(ClaimTypes.Name, userToken.User.Login),
         };
-        var claimsIdentity = new ClaimsIdentity(claims, UserTokenDefaults.SchemaName);
+        var claimsIdentity = new ClaimsIdentity(claims, UserTokenDefaults.AuthenticationScheme);
         var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
 
-        return AuthenticateResult.Success(new AuthenticationTicket(claimsPrincipal, UserTokenDefaults.SchemaName));
+        return AuthenticateResult.Success(new AuthenticationTicket(claimsPrincipal, UserTokenDefaults.AuthenticationScheme));
     }
 }

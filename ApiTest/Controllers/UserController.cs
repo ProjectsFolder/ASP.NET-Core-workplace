@@ -7,13 +7,15 @@ using Application.Domains.Users.Commands.CreateUser;
 using Application.Domains.Users.Queries.GetUser;
 using Application.Domains.Users.Queries.GetUsers;
 using Asp.Versioning;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
 
 [ApiVersion(1.0)]
-[Authorize(AuthenticationSchemes = UserTokenDefaults.SchemaName)]
+[Authorize(AuthenticationSchemes = UserTokenDefaults.AuthenticationScheme)]
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class UserController : BaseController
 {
     [HttpGet]

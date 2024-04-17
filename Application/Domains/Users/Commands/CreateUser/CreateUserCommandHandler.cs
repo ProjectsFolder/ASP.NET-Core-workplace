@@ -20,7 +20,7 @@ internal class CreateUserCommandHandler(
         var user = new User
         {
             Login = request.Login,
-            Password = "new",
+            Password = "none",
             Email = request.Email,
         };
 

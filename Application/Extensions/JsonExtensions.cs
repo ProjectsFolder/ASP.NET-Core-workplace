@@ -29,4 +29,20 @@ public static class JsonExtensions
             return false;
         }
     }
+
+    public static bool TryParseJson<T>(this string json, out T? result)
+        where T : class
+    {
+        result = null;
+        try
+        {
+            result = JsonSerializer.Deserialize<T>(json);
+
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
 }

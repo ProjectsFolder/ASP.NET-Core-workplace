@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Api.GrpcControllers;
 
-[Authorize(AuthenticationSchemes = UserTokenDefaults.SchemaName)]
+[Authorize(AuthenticationSchemes = UserTokenDefaults.AuthenticationScheme)]
 public class UserController(IMediator mediator, ITransaction transaction) : UserService.UserServiceBase
 {
     public async override Task<CreateUsersResponse> Create(CreateUsersRequest request, ServerCallContext context)

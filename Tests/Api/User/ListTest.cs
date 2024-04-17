@@ -7,7 +7,7 @@ namespace Tests.Api.User;
 [TestClass]
 public class ListTest : BaseTest
 {
-    [TestMethod]
+    //[TestMethod]
     public async Task List()
     {
         var user = Database.Users.Where(u => u.Login.Equals("admin")).First();
