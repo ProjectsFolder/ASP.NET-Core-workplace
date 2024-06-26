@@ -17,6 +17,7 @@ public class LoginCommandHandler(
     ITransaction transaction,
     IPasswordHasher passwordHasher,
     IRabbitMq rabbitMq,
+    IKafka kafka,
     IMapper mapper,
     IRepository<User> userRepository,
     IRepository<Token> tokenRepository) : IRequestHandler<LoginCommand, string>
@@ -55,6 +56,7 @@ public class LoginCommandHandler(
         var users = await userRepository.ListAsync(cancellationToken);
 
         _ = rabbitMq.SendAsync(ExchangeName, "", new { user.Login, Time = DateTime.UtcNow });
+        kafka.SendAsync(ExchangeName, new { user.Login, Time = DateTime.UtcNow });
 
         var message = new MailTemplateDto
         {

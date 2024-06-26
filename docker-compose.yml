@@ -8,7 +8,7 @@ networks:
 services:
   api:
     image: apitest
-    container_name: apitest
+    hostname: apitest
     build:
       dockerfile: ApiTest/Dockerfile
       context: .
@@ -24,7 +24,7 @@ services:
 
   db:
     image: postgres:16-alpine
-    container_name: apitest_db
+    hostname: apitest_db
     restart: always
     environment:
       POSTGRES_USER: postgres
@@ -37,7 +37,7 @@ services:
 
   pgadmin:
     image: dpage/pgadmin4:7.7
-    container_name: apitest_pgadmin
+    hostname: apitest_pgadmin
     user: root
     restart: always
     environment:
@@ -55,7 +55,7 @@ services:
 
   rabbitmq:
     image: rabbitmq:3.13.0-management
-    container_name: apitest_rabbitmq
+    hostname: apitest_rabbitmq
     restart: always
     environment:
       RABBITMQ_DEFAULT_USER: admin
@@ -70,7 +70,7 @@ services:
 
   mailhog:
     image: mailhog/mailhog:latest
-    container_name: apitest_mailhog
+    hostname: apitest_mailhog
     restart: always
     ports:
       - "17004:8025"
@@ -80,7 +80,7 @@ services:
 
   redis:
     image: redis:7.2-alpine
-    container_name: apitest_redis
+    hostname: apitest_redis
     restart: always
     ports:
       - "17007:6739"
@@ -95,7 +95,7 @@ services:
 
   db_keycloak:
     image: postgres:16-alpine
-    container_name: apitest_db_keycloak
+    hostname: apitest_db_keycloak
     restart: always
     environment:
       POSTGRES_USER: postgres
@@ -108,7 +108,7 @@ services:
 
   keycloak:
     image: keycloak/keycloak:18.0.0
-    container_name: apitestkeycloak
+    hostname: apitestkeycloak
     command:
       - start-dev
     restart: always
@@ -124,5 +124,45 @@ services:
       - 17008:8080
     depends_on:
       - db_keycloak
+    networks:
+      - backend
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    hostname: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - backend
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      - zookeeper
+    hostname: kafka
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    networks:
+      - backend
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui
+    hostname: kafka-ui
+    ports:
+      - 17009:8080
+    restart: always
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=local
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092
+      - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
+    links:
+      - kafka
+      - zookeeper
     networks:
       - backend

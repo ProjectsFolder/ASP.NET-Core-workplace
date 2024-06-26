@@ -3,7 +3,7 @@ using System.Text.Json;
 using System.Text;
 using Application.Interfaces;
 
-namespace Infrastructure.EventBus;
+namespace Infrastructure.EventBus.Rabbit;
 
 public class RabbitMq(IConnection connection) : IRabbitMq
 {

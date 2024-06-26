@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RabbitMQ.Client;
 
-namespace Infrastructure.EventBus;
+namespace Infrastructure.EventBus.Rabbit;
 
 public static class Dependency
 {

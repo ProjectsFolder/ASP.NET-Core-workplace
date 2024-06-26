@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using EventBus.Events;
 using Application.Extensions;
 
-namespace Infrastructure.EventBus;
+namespace Infrastructure.EventBus.Rabbit;
 
 public class RabbitMqListener(
     IServiceProvider serviceProvider,
